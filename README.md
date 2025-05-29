@@ -313,6 +313,53 @@ Then I expect one resource of "<value>" contains "<field>" equals to "<expected>
 Then I expect one resource of "{{ response.body.users }}" contains "age" equals to "30" as "integer"
 ```
 
+### 🔐 Manipulate localStorage
+
+1. Set a value in LocalStorage
+
+```gherkin
+Given I set in localstorage field "<key>" with "<value>"
+
+# Example:
+Given I set in localstorage field "token" with "abc123"
+```
+
+2. Assert a value in LocalStorage
+
+```gherkin
+Then I expect localstorage field "<key>" is "<expected>"
+
+# Example:
+Then I expect localstorage field "token" is "abc123"
+```
+
+3. Delete a value from LocalStorage
+
+```gherkin
+Then I delete "<key>" in localstorage
+
+# Example:
+Then I delete "token" in localstorage
+```
+
+4. Copy LocalStorage field to context
+
+```gherkin
+Then I set localstorage field "<localStorageField>" to context field "<contextField>"
+
+# Example:
+Then I set localstorage field "token" to context field "userToken"
+```
+
+5. Copy LocalStorage field to context with type conversion
+
+```gherkin
+Then I set localstorage field "<localStorageField>" to context field "<contextField>" as "<type>"
+
+# Example:
+Then I set localstorage field "isAdmin" to context field "adminFlag" as "boolean"
+```
+
 ### ✅ Step Summary
 
 ```gherkin
@@ -347,6 +394,13 @@ Then I expect one resource of "<value>" equals to "<expected>"
 Then I expect one resource of "<value>" equals to "<expected>" as "<type>"
 Then I expect one resource of "<value>" contains "<field>" equals to "<expected>"
 Then I expect one resource of "<value>" contains "<field>" equals to "<expected>" as "<type>"
+
+# 🔐 Manipulate localStorage
+Given I set in localstorage field "<key>" with "<value>"
+Then I expect localstorage field "<key>" is "<expected>"
+Then I delete "<key>" in localstorage
+Then I set localstorage field "<localStorageField>" to context field "<contextField>"
+Then I set localstorage field "<localStorageField>" to context field "<contextField>" as "<type>"
 ```
 
 ## 🚧 Missing a Step?
