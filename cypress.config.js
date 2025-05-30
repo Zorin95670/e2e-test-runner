@@ -6,6 +6,7 @@ const createEsbuildPlugin =
     require("@badeball/cypress-cucumber-preprocessor/esbuild").createEsbuildPlugin;
 const dotenv = require("dotenv");
 const path = require('path');
+const {Kafka, logLevel} = require('kafkajs');
 
 dotenv.config();
 
@@ -25,13 +26,59 @@ module.exports = defineConfig({
                     plugins: [createEsbuildPlugin(config)],
                 })
             );
+            let kafka;
+            let producer;
+            let consumer;
+            let kafkaMessages = {};
+
             on('task', {
                 log(message) {
-                    console.log(message)
-
-                    return null
+                    console.log(message);
+                    return null;
                 },
+                initKafka({clientId, broker}) {
+                    kafka = new Kafka({
+                        clientId: clientId,
+                        brokers: [broker],
+                        logLevel: logLevel.ERROR,
+                    });
+                    return null;
+                },
+                initKafkaProducer() {
+                    producer = kafka.producer();
+                    return null;
+                },
+                initKafkaConsumer({groupId}) {
+                    consumer = kafka.consumer({groupId});
+                    return null;
+                },
+                sendKafkaMessage({topic, value}) {
+                    return producer
+                        .connect()
+                        .then(() => producer.send({topic, messages: [{value}]}))
+                        .then(() => producer.disconnect())
+                        .then(() => null);
+                },
+                listenKafkaTopic({topic}) {
+                    consumer
+                        .connect()
+                        .then(() => consumer.subscribe({topic, fromBeginning: true}))
+                        .then(() => consumer.run({
+                            eachMessage: async ({message}) => {
+                                if (!kafkaMessages[topic]) {
+                                    kafkaMessages[topic] = [];
+                                }
+
+                                kafkaMessages[topic].push(message.value.toString());
+                            },
+                        }));
+                    return null;
+                },
+                getKafkaMessages({topic}) {
+                    return kafkaMessages[topic] || [];
+                }
             });
+
             return config;
         },
     }
