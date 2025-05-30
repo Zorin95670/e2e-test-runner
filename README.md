@@ -360,6 +360,80 @@ Then I set localstorage field "<localStorageField>" to context field "<contextFi
 Then I set localstorage field "isAdmin" to context field "adminFlag" as "boolean"
 ```
 
+### 🌐 URL Navigation & Assertions
+
+1. Visit a URL
+
+```gherkin
+Given I visit "<url>"
+
+# Example:
+Given I visit "{{ env.baseUrl }}/login"
+```
+
+2. Reload a specific URL
+
+```gherkin
+Given I reload to "<url>"
+
+# Example:
+Given I reload to "{{ env.baseUrl }}/dashboard"
+```
+
+3. Expect current URL is exactly
+
+```gherkin
+Then I expect current url is "<url>"
+
+# Example:
+Then I expect current url is "{{ env.baseUrl }}/home"
+```
+
+4. Expect current URL contains a string
+
+```gherkin
+Then I expect current url contains "<url>"
+
+# Example:
+Then I expect current url contains "/home"
+```
+
+5. Expect current URL matches a pattern
+
+```gherkin
+Then I expect current url matches "<regex>"
+
+# Example:
+Then I expect current url matches ".*\\/profile\\/\\d+$"
+```
+
+6. Expect current URL is no longer a specific URL
+
+```gherkin
+Then I expect the current URL no longer is "<url>"
+
+# Example:
+Then I expect the current URL no longer is "{{ env.baseUrl }}/splash"
+```
+
+7. Expect current URL no longer contains a string
+
+```gherkin
+Then I expect the current URL no longer contains "<text>"
+
+# Example:
+Then I expect the current URL no longer contains "/splash"
+```
+
+8. Expect current URL no longer matches a pattern
+
+```gherkin
+Then I expect the current URL no longer matches "<regex>"
+
+# Example:
+Then I expect the current URL no longer matches ".*\\/splash$"
+```
+
 ### ✅ Step Summary
 
 ```gherkin
@@ -401,6 +475,16 @@ Then I expect localstorage field "<key>" is "<expected>"
 Then I delete "<key>" in localstorage
 Then I set localstorage field "<localStorageField>" to context field "<contextField>"
 Then I set localstorage field "<localStorageField>" to context field "<contextField>" as "<type>"
+
+# 🌐 URL Navigation & Assertions
+Given I visit "<url>"
+Given I reload to "<url>"
+Then I expect current url is "<url>"
+Then I expect current url contains "<url>"
+Then I expect current url matches "<regex>"
+Then I expect the current URL no longer is "<url>"
+Then I expect the current URL no longer contains "<text>"
+Then I expect the current URL no longer matches "<regex>"
 ```
 
 ## 🚧 Missing a Step?
