@@ -1,6 +1,7 @@
 const defaultContext = {
     env: Cypress.env(),
     ctx: {},
+    kafka: {},
 };
 
 let testContext = { ...defaultContext };
