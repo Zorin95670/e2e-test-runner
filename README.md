@@ -174,6 +174,8 @@ Then I store "<key>" as "<value>" in context
 Then I store "userId" as "{{ response.body.id }}" in context
 ```
 
+---
+
 ### 🌐 HTTP Requests
 
 1. Basic request
@@ -228,6 +230,8 @@ When I request "https://api.example.com/users" with method "POST" with body as "
 """
 ```
 
+---
+
 ### 📥 Response Assertions
 
 1. Check status code
@@ -275,6 +279,8 @@ Then I expect "<value>" as "<type>" to have length <number>
 Then I expect "{{ response.body.users }}" as "json" to have length 5
 ```
 
+---
+
 ### 🔍 Resource Assertions
 
 1. One resource equals to a value
@@ -312,6 +318,8 @@ Then I expect one resource of "<value>" contains "<field>" equals to "<expected>
 # Example:
 Then I expect one resource of "{{ response.body.users }}" contains "age" equals to "30" as "integer"
 ```
+
+---
 
 ### 🔐 Manipulate localStorage
 
@@ -359,6 +367,8 @@ Then I set localstorage field "<localStorageField>" to context field "<contextFi
 # Example:
 Then I set localstorage field "isAdmin" to context field "adminFlag" as "boolean"
 ```
+
+---
 
 ### 🌐 URL Navigation & Assertions
 
@@ -434,6 +444,233 @@ Then I expect the current URL no longer matches "<regex>"
 Then I expect the current URL no longer matches ".*\\/splash$"
 ```
 
+Voici une proposition de section README bien structurée et formulée pour les steps que tu as partagés, dans le même style que ton exemple :
+
+---
+
+### 🖱️ HTML Element Interactions
+
+1. Click on an element
+
+```gherkin
+When I click on "<selector>"
+
+# Example:
+When I click on "#submit-button"
+```
+
+2. Force click on an element (ignores visibility)
+
+```gherkin
+When I force click on "<selector>"
+
+# Example:
+When I force click on ".dropdown-toggle"
+```
+
+3. Double-click on an element
+
+```gherkin
+When I double click on "<selector>"
+
+# Example:
+When I double click on "#editable-cell"
+```
+
+4. Scroll to a position inside an element
+
+```gherkin
+When I scroll to "<position>" into "<selector>"
+
+# Example:
+When I scroll to "bottom" into ".scrollable-container"
+```
+
+5. Hover an element to make it visible
+
+```gherkin
+When I hover "<selector>" to make it visible
+
+# Example:
+When I hover ".tooltip-trigger" to make it visible
+```
+
+6. Drag an element onto another
+
+```gherkin
+When I drag "<originSelector>" onto "<destinationSelector>"
+
+# Example:
+When I drag "#item" onto "#dropzone"
+```
+
+7. Drag an element by a specific offset
+
+```gherkin
+When I drag "<selector>" of <x>,<y>
+
+# Example:
+When I drag "#slider" of 50,0
+```
+
+8. Move an element by offset
+
+```gherkin
+When I move "<selector>" of <x>,<y>
+
+# Example:
+When I move "#box" of 20,30
+```
+
+9. Select an option inside a dropdown or menu
+
+```gherkin
+When I select "<option>" in "<selector>"
+
+# Example:
+When I select ".option-2" in ".dropdown-menu"
+```
+
+---
+
+### 👁️ HTML Element Assertions
+
+1. Expect element to exist
+
+```gherkin
+Then I expect the HTML element "<selector>" exists
+```
+
+2. Expect element to not exist
+
+```gherkin
+Then I expect the HTML element "<selector>" not exists
+```
+
+3. Expect element to be visible
+
+```gherkin
+Then I expect the HTML element "<selector>" to be visible
+```
+
+4. Expect element to be hidden
+
+```gherkin
+Then I expect the HTML element "<selector>" to be hidden
+```
+
+5. Expect element to be disabled
+
+```gherkin
+Then I expect the HTML element "<selector>" to be disabled
+```
+
+6. Expect element to be enabled
+
+```gherkin
+Then I expect the HTML element "<selector>" to be enabled
+```
+
+7. Expect element to have exact width
+
+```gherkin
+Then I expect the HTML element "<selector>" width is <width>
+
+# Example:
+Then I expect the HTML element "#image" width is 200
+```
+
+8. Expect element to have exact height
+
+```gherkin
+Then I expect the HTML element "<selector>" height is <height>
+
+# Example:
+Then I expect the HTML element "#container" height is 400
+```
+
+9. Expect element to be at a specific position
+
+```gherkin
+Then I expect the HTML element "<selector>" to be at position <x>,<y>
+
+# Example:
+Then I expect the HTML element "#popup" to be at position 100,200
+```
+
+10. Expect element to have a specific attribute and value
+
+```gherkin
+Then I expect the HTML element "<selector>" to have attribute "<attribute>" with value "<value>"
+
+# Example:
+Then I expect the HTML element "#logo" to have attribute "alt" with value "Company Logo"
+```
+
+11. Expect element to contain specific text
+
+```gherkin
+Then I expect the HTML element "<selector>" contains "<text>"
+
+# Example:
+Then I expect the HTML element "#message" contains "Welcome!"
+```
+
+12. Expect element to have a specific value
+
+```gherkin
+Then I expect the HTML element "<selector>" to have value "<value>"
+
+# Example:
+Then I expect the HTML element "#username" to have value "john.doe"
+```
+
+13. Expect element to appear a certain number of times
+
+```gherkin
+Then I expect the HTML element "<selector>" appear <count> time(s) on screen
+
+# Example:
+Then I expect the HTML element ".card" appear 3 time(s) on screen
+```
+
+---
+
+### ✏️ HTML Element Text Manipulation
+
+1. Clear the text inside an element
+
+```gherkin
+Then I clear the text in the HTML element "<selector>"
+
+# Example:
+Then I clear the text in the HTML element "#search-box"
+```
+
+2. Set a specific text inside an element
+
+```gherkin
+Then I set the text "<text>" in the HTML element "<selector>"
+
+# Example:
+Then I set the text "admin" in the HTML element "#username"
+```
+
+---
+
+### 📐 Viewport Configuration
+
+1. Set viewport size (useful for responsive tests)
+
+```gherkin
+Given I set the viewport size to <width> px by <height> px
+
+# Example:
+Given I set the viewport size to 1280 px by 720 px
+```
+
+---
+
 ### ✅ Step Summary
 
 ```gherkin
@@ -485,6 +722,39 @@ Then I expect current url matches "<regex>"
 Then I expect the current URL no longer is "<url>"
 Then I expect the current URL no longer contains "<text>"
 Then I expect the current URL no longer matches "<regex>"
+
+# 🖱️ HTML Element Interactions
+When I click on "<selector>"
+When I force click on "<selector>"
+When I double click on "<selector>"
+When I scroll to "<position>" into "<selector>"
+When I hover "<selector>" to make it visible
+When I drag "<originSelector>" onto "<destinationSelector>"
+When I drag "<selector>" of <x>,<y>
+When I move "<selector>" of <x>,<y>
+When I select "<option>" in "<selector>"
+
+# 👁️ HTML Element Assertions
+Then I expect the HTML element "<selector>" exists
+Then I expect the HTML element "<selector>" not exists
+Then I expect the HTML element "<selector>" to be visible
+Then I expect the HTML element "<selector>" to be hidde
+Then I expect the HTML element "<selector>" to be disabled
+Then I expect the HTML element "<selector>" to be enabled
+Then I expect the HTML element "<selector>" width is <width>
+Then I expect the HTML element "<selector>" height is <height>
+Then I expect the HTML element "<selector>" to be at position <x>,<y>
+Then I expect the HTML element "<selector>" to have attribute "<attribute>" with value "<value>"
+Then I expect the HTML element "<selector>" contains "<text>"
+Then I expect the HTML element "<selector>" to have value "<value>"
+Then I expect the HTML element "<selector>" appear <count> time(s) on screen
+
+# ✏️ HTML Element Text Manipulation
+Then I clear the text in the HTML element "<selector>"
+Then I set the text "<text>" in the HTML element "<selector>"
+
+# 📐 Viewport Configuration
+Given I set the viewport size to <width> px by <height> px
 ```
 
 ## 🚧 Missing a Step?
