@@ -671,6 +671,124 @@ Given I set the viewport size to 1280 px by 720 px
 
 ---
 
+### ☕ Kafka Messaging Steps
+
+1. Setup Kafka client with clientId and broker
+
+```gherkin
+Given I setup kafka with clientId {string} and broker {string}
+
+# Example:
+Given I setup kafka with clientId "my-client" and broker "localhost:9092"
+```
+
+2. Setup Kafka producer
+
+```gherkin
+Given I setup kafka producer
+
+# Example:
+Given I setup kafka producer
+```
+
+3. Setup Kafka consumer with groupId
+
+```gherkin
+Given I setup kafka consumer with groupId {string}
+
+# Example:
+Given I setup kafka consumer with groupId "test-group"
+```
+
+4. Listen for Kafka messages on a topic
+
+```gherkin
+Given I listen for Kafka messages on the topic {string}
+
+# Example:
+Given I listen for Kafka messages on the topic "orders"
+```
+
+5. Expect a number of messages received on a Kafka topic
+
+```gherkin
+Then I expect {int} message(s) received on Kafka topic {string}
+
+# Example:
+Then I expect 3 message(s) received on Kafka topic "orders"
+```
+
+6. Expect a message on a Kafka topic to be equal to a string
+
+```gherkin
+Then I expect a message on Kafka topic {string} equals to {string}
+
+# Example:
+Then I expect a message on Kafka topic "orders" equals to "{\"orderId\":123}"
+```
+
+7. Expect a message on a Kafka topic to be equal to a multi-line string
+
+```gherkin
+Then I expect a message on Kafka topic {string} equals to:
+
+"""
+{
+  "orderId": 123,
+  "status": "shipped"
+}
+"""
+
+# Example:
+Then I expect a message on Kafka topic "orders" equals to:
+"""
+{
+  "orderId": 123,
+  "status": "shipped"
+}
+"""
+```
+
+8. Expect a message on a Kafka topic contains a substring
+
+```gherkin
+Then I expect a message on Kafka topic {string} contains {string}
+
+# Example:
+Then I expect a message on Kafka topic "orders" contains "shipped"
+```
+
+9. Expect a message on a Kafka topic contains a multi-line string
+
+```gherkin
+Then I expect a message on Kafka topic {string} contains:
+
+"""
+{
+  "status": "shipped"
+}
+"""
+
+# Example:
+Then I expect a message on Kafka topic "orders" contains:
+"""
+{
+  "status": "shipped"
+}
+"""
+```
+
+10. Expect a message on a Kafka topic matches a regex
+
+```gherkin
+Then I expect a message on Kafka topic {string} matches regex {string}
+
+# Example:
+Then I expect a message on Kafka topic "orders" matches regex "^\\{.*\"status\":\\s*\"shipped\".*\\}$"
+```
+
+---
+
 ### ✅ Step Summary
 
 ```gherkin
@@ -755,6 +873,29 @@ Then I set the text "<text>" in the HTML element "<selector>"
 
 # 📐 Viewport Configuration
 Given I set the viewport size to <width> px by <height> px
+
+# ☕ Kafka Messaging Steps
+Given I setup kafka with clientId {string} and broker {string}
+Given I setup kafka producer
+Given I setup kafka consumer with groupId {string}
+Given I listen for Kafka messages on the topic {string}
+Then I expect {int} message(s) received on Kafka topic {string}
+Then I expect a message on Kafka topic {string} equals to {string}
+Then I expect a message on Kafka topic {string} equals to:
+"""
+{
+  "orderId": 123,
+  "status": "shipped"
+}
+"""
+Then I expect a message on Kafka topic {string} contains {string}
+Then I expect a message on Kafka topic {string} contains:
+"""
+{
+  "status": "shipped"
+}
+"""
+Then I expect a message on Kafka topic {string} matches regex {string}
 ```
 
 ## 🚧 Missing a Step?
