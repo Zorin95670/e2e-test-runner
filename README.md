@@ -90,8 +90,11 @@ docker build e2e -t e2e-test-runner
 docker run --rm \
   --env-file .env \
   --network my-app-network \
-  -v "$(pwd)":/e2e \
+  -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features \
   e2e-test-runner
+
+# or one line command:
+docker run --rm --env-file .env --network my-app-network -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features e2e-test-runner
 ```
 
 > Replace `my-app-network` with the name of the Docker network your application is running on.
@@ -203,7 +206,7 @@ When I request "/api/search" with method "GET" with query parameters
 
 ```gherkin
 Then I log "<value>"
-  
+
 # Example:
 Then I log "{{ response.status }}"
 ```
