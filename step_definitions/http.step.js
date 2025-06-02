@@ -1,6 +1,6 @@
-import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
+import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import nunjucks from "nunjucks";
-import {convert, getDataTable} from "./utils";
+import {getDataTable, render} from "./utils";
 
 When('I request {string} with method {string}', (templatedUrl, method) => {
     cy.getContext().then((context) => {
@@ -9,9 +9,10 @@ When('I request {string} with method {string}', (templatedUrl, method) => {
         cy.request({
             method,
             url,
+            headers: {...context.httpHeaders},
             failOnStatusCode: false
         })
-            .then((response) => cy.setContext({ response }));
+            .then((response) => cy.setContext({response}));
     });
 });
 
@@ -24,8 +25,9 @@ When('I request {string} with method {string} with query parameters', (templated
             method,
             url,
             qs,
+            headers: {...context.httpHeaders},
             failOnStatusCode: false
-        }).then((response) => cy.setContext({ response }));
+        }).then((response) => cy.setContext({response}));
     });
 });
 
@@ -38,28 +40,25 @@ When('I request {string} with method {string} with body:', (templatedUrl, method
             method,
             url,
             body,
+            headers: {...context.httpHeaders},
             failOnStatusCode: false
-        }).then((response) => cy.setContext({ response }));
-    });
-});
-
-When('I request {string} with method {string} with body as {string}:', (templatedUrl, method, contentType, docString) => {
-    cy.getContext().then((context) => {
-        const url = nunjucks.renderString(templatedUrl, context);
-        const body = nunjucks.renderString(docString, context);
-
-        cy.request({
-            method,
-            url,
-            body,
-            headers: { 'Content-Type': contentType },
-            failOnStatusCode: false
-        }).then((response) => cy.setContext({ response }));
+        }).then((response) => cy.setContext({response}));
     });
 });
 
 Then('I expect status code is {int}', (expected) => {
     cy.getContext().then((context) => {
         expect(context.response.status).to.equal(expected);
+    });
+})
+
+Given('I set http header {string} with {string}', (key, templatedValue) => {
+    cy.getContext().then((context) => {
+        const value = render(templatedValue, context);
+        const {httpHeaders} = context;
+
+        httpHeaders[key] = value;
+
+        return cy.setContext({httpHeaders});
     });
 })
