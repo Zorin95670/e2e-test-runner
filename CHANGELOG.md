@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.1...v0.1.2) (2025-06-02)
+
+
+### Features
+
+* add step to manage http header ([57dd187](https://github.com/Zorin95670/cypress-test-runner/commit/57dd1870c19bfaa1a8b4a9ad15cf0745bcf53df4))
+
+
+### Bug Fixes
+
+* display json with logging step ([3f1cea1](https://github.com/Zorin95670/cypress-test-runner/commit/3f1cea1c07150a74c1017dec4c47c6f81760b400))
+* simplify launching runner ([591a6ad](https://github.com/Zorin95670/cypress-test-runner/commit/591a6adeec43a017f36570f3a43d388d547feece))
+
 ### 0.1.1 (2025-05-30)
 
 
