@@ -1,16 +1,17 @@
 const defaultContext = {
     env: Cypress.env(),
     ctx: {},
+    httpHeaders: {},
 };
 
-let testContext = { ...defaultContext };
+let testContext = {...defaultContext};
 
 Cypress.Commands.add('getContext', () => testContext);
 
 Cypress.Commands.add('setContext', (newValues) => {
-    testContext = { ...testContext, ...newValues };
+    testContext = {...testContext, ...newValues};
 });
 
 Cypress.Commands.add('resetContext', () => {
-    testContext = { ...defaultContext };
+    testContext = {...defaultContext};
 });

@@ -115,11 +115,12 @@ Feature: Basic HTTP check
 This test runner provides a built-in context system to share data between steps.
 It is designed to simplify dynamic value handling, templating, and state tracking during test execution.
 
-| Key        | Description                                                                                                      |
-|------------|------------------------------------------------------------------------------------------------------------------|
-| `env`      | Contains all environment variables. Useful for configuration and templating.                                     |
-| `ctx`      | A customizable object used to store any custom data needed during the test flow. **Reset before each scenario.** |
-| `response` | Stores the last HTTP response. **Reset before each scenario.**                                                   |
+| Key           | Description                                                                                                      |
+|---------------|------------------------------------------------------------------------------------------------------------------|
+| `env`         | Contains all environment variables. Useful for configuration and templating.                                     |
+| `ctx`         | A customizable object used to store any custom data needed during the test flow. **Reset before each scenario.** |
+| `response`    | Stores the last HTTP response. **Reset before each scenario.**                                                   |
+| `httpHeaders` | Stores all HTTP headers set via step definitions. **Reset before each scenario.**                                |
 
 **Example Usage**
 
@@ -245,19 +246,13 @@ When I request "https://api.example.com/users" with method "POST" with body:
 """
 ```
 
-4. Request with typed body
+4. Set HTTP header
 
 ```gherkin
-When I request "<url>" with method "<method>" with body as "<contentType>":
-"""
-{ "id": 5 }
-"""
+Given I set http header "<key>" with "<value>"
 
 # Example:
-When I request "https://api.example.com/users" with method "POST" with body as "application/json":
-"""
-{ "id": 5 }
-"""
+Given I set http header "Authorization" with "Bearer abc123"
 ```
 
 ---
@@ -708,6 +703,7 @@ Then I wait <seconds>s
 Then I store "<key>" as "<value>" in context
 
 # 🌐 HTTP Requests
+Given I set http header "<key>" with "<value>"
 When I request "<url>" with method "<method>"
 When I request "<url>" with method "<method>" with query parameters
 | key     | value      | type    |
@@ -715,10 +711,6 @@ When I request "<url>" with method "<method>" with query parameters
 When I request "<url>" with method "<method>" with body:
 """
 { "name": "John" }
-"""
-When I request "<url>" with method "<method>" with body as "<contentType>":
-"""
-{ "id": 5 }
 """
 
 # 📥 Response Assertions
