@@ -41,8 +41,7 @@
     "cypress": "^14.3.3",
     "dotenv": "^16.5.0",
     "nunjucks": "^3.2.4",
-    "semantic-release": "^24.2.3",
-    "yargs": "^18.0.0"
+    "semantic-release": "^24.2.3"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": "step_definitions/**/*.step.js"
