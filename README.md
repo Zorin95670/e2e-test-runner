@@ -42,29 +42,59 @@ cd e2e
 npm install
 ```
 
-## Running Tests
+## 🚀 Running Tests
 
-### CLI Options
+### 🔧 Required Environment Variable
 
-When launching the test runner, you can customize the test execution with the following options:
+The test runner **requires** the environment variable `CYPRESS_FEATURES_PATH`.
 
-| Option       | Description                                       | Example                 |
-|--------------|---------------------------------------------------|-------------------------| 
-| `--features` | Path to the directory containing `.feature` files | `./tests/features`      |
-| `--baseUrl`  | Base URL used for `cy.visit()` or HTTP requests   | `http://localhost:3000` |
+* It must point to the directory containing your `.feature` files.
+* The path should be **relative to the current working directory** (i.e., where `npm run start` is executed).
+* For example, in a Java project structure, if the test runner is executed from the `e2e` folder, the correct value
+  would typically be:
 
-### With Node (locally)
-
-```bash
-node e2e/index.js --features=./tests/features --baseUrl=http://localhost:3000
+```env
+CYPRESS_FEATURES_PATH=../src/test/resources/features
 ```
 
-### With Docker
+You must define this variable in a `.env` file or inject it at runtime.
+
+### 📦 Local Execution (with `dotenv`)
+
+To run the test runner locally and load environment variables from a `.env` file:
+
+1. Install [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli) globally:
+
+```bash
+npm install -g dotenv-cli
+```
+
+2. Run the test runner:
+
+```bash
+dotenv -e ../.env -- npm run start
+```
+
+### 🐳 Run via Docker
+
+To run the test runner in a Docker container, make sure to:
+
+* Mount the project directory.
+* Provide access to the `.env` file.
+* Connect the container to the appropriate Docker network (e.g., to communicate with your application under test).
+
+Example:
 
 ```bash
 docker build e2e -t e2e-test-runner
-docker run --rm -e features=./tests/features -e baseUrl=http://localhost:3000 -v e2e-test-runner
+docker run --rm \
+  --env-file .env \
+  --network my-app-network \
+  -v "$(pwd)":/e2e \
+  e2e-test-runner
 ```
+
+> Replace `my-app-network` with the name of the Docker network your application is running on.
 
 ## Usage
 
@@ -444,8 +474,6 @@ Then I expect the current URL no longer matches "<regex>"
 Then I expect the current URL no longer matches ".*\\/splash$"
 ```
 
-Voici une proposition de section README bien structurée et formulée pour les steps que tu as partagés, dans le même style que ton exemple :
-
 ---
 
 ### 🖱️ HTML Element Interactions
@@ -758,16 +786,17 @@ Given I set the viewport size to <width> px by <height> px
 ```
 
 ## 🚧 Missing a Step?
+
 If you need a step that doesn't exist yet, there are two options:
 
 * 💬 Open an issue: Create an issue describing the step you need, including:
-  * The Gherkin syntax you’d like to use
-  * A short example of the expected behavior
-  * Any relevant context or use case
+    * The Gherkin syntax you’d like to use
+    * A short example of the expected behavior
+    * Any relevant context or use case
 
 * 🤝 Contribute directly: If you're comfortable with JavaScript and Cypress, feel free to open a Pull Request. Please:
-  * Follow the existing step definitions style
-  * Add Gherkin usage and examples to the README
-  * Keep tests modular and consistent
+    * Follow the existing step definitions style
+    * Add Gherkin usage and examples to the README
+    * Keep tests modular and consistent
 
 🙏 Contributions and feedback are welcome! This runner is designed to be extensible and team-friendly.
