@@ -18,7 +18,11 @@ export function convert(value, type) {
 }
 
 export function render(template, context) {
-    return nunjucks.renderString(template, context);
+    const env = new nunjucks.Environment(null, {autoescape: false});
+
+    env.addFilter('json', obj => JSON.stringify(obj, null, 2));
+
+    return env.renderString(template, context);
 }
 
 export function getDataTable(context, dataTable) {

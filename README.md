@@ -110,6 +110,27 @@ Feature: Basic HTTP check
     Then I expect status code is 200
 ```
 
+### Using Nunjucks in Step Values
+
+You can use [Nunjucks](https://mozilla.github.io/nunjucks/) templating syntax inside step values. This allows dynamic
+content, especially useful when injecting data from environment variables or shared context.
+
+#### Example with environment variable
+
+```gherkin
+Given I set http header "Authorization" with "Bearer {{ ctx.AUTH_TOKEN }}"
+```
+
+#### JSON formatting support
+
+A custom `json` filter has been added to Nunjucks to properly serialize objects into formatted JSON strings.
+
+```gherkin
+Then I log "{{ response.body | json }}"
+```
+
+This is useful for debugging or displaying formatted JSON output directly from the response.
+
 ### Context System
 
 This test runner provides a built-in context system to share data between steps.
