@@ -873,6 +873,12 @@ Then I expect a message on Kafka topic "<topic>" matches regex "<regex>"
 Then I expect a message on Kafka topic "orders" matches regex "^\\{.*\"status\":\\s*\"shipped\".*\\}$"
 ```
 
+13. Log kafka messages
+
+```gherkin
+Then I log kafka messages
+```
+
 ---
 
 ### ✅ Step Summary
@@ -988,6 +994,7 @@ Then I expect a message on Kafka topic "<topic>" contains:
 }
 """
 Then I expect a message on Kafka topic "<topic>" matches regex "<regex>"
+Then I log kafka messages
 ```
 
 ## 🚧 Missing a Step?

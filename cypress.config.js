@@ -37,6 +37,10 @@ module.exports = defineConfig({
                     console.log(message);
                     return null;
                 },
+                logKafkaMessages() {
+                    console.log(kafkaMessages);
+                    return null;
+                },
                 clearKafka() {
                     const tasks = [];
 
