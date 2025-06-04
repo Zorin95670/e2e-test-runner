@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.4](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.3...v0.1.4) (2025-06-04)
+
+
+### Features
+
+* add new step to store docString in context ([75fedd2](https://github.com/Zorin95670/cypress-test-runner/commit/75fedd2315593c58165c726b93f56e5ae7a7a84c))
+* add step definition for kafka ([0d4b2fd](https://github.com/Zorin95670/cypress-test-runner/commit/0d4b2fd4eea094e89da891c832b6ea4771270f7d))
+
+
+### Bug Fixes
+
+* json comparaison ([e0dc5ba](https://github.com/Zorin95670/cypress-test-runner/commit/e0dc5baf309fc1909f552cae7b9511b9d8db2c4a))
+
 ### [0.1.3](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.2...v0.1.3) (2025-06-02)
 
 ### [0.1.2](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.1...v0.1.2) (2025-06-02)
