@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.4...v0.1.5) (2025-06-04)
+
+
+### Features
+
+* after each scenario clear kafka ([182b382](https://github.com/Zorin95670/cypress-test-runner/commit/182b3824c5e60eb28e3b8072d16d3a442d46ab65))
+
 ### [0.1.4](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.3...v0.1.4) (2025-06-04)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "e2e-test-runner",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A project to execute E2E end-to-end tests in a CI pipeline or local environment.",
   "main": "index.js",
   "scripts": {
