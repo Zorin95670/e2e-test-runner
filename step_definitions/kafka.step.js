@@ -1,6 +1,10 @@
 import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import {render} from "./utils";
 
+afterEach(() => {
+    cy.task('clearKafka');
+});
+
 Given('I setup kafka with clientId {string} and broker {string}', (templatedClientId, templatedBroker) => {
     cy.getContext().then((context) => {
         const clientId = render(templatedClientId, context);

@@ -36,6 +36,25 @@ module.exports = defineConfig({
                     console.log(message);
                     return null;
                 },
+                clearKafka() {
+                    const tasks = [];
+
+                    if (consumer) {
+                        tasks.push(consumer.disconnect().catch(() => {
+                        }));
+                        consumer = null;
+                    }
+
+                    if (producer) {
+                        tasks.push(producer.disconnect().catch(() => {
+                        }));
+                        producer = null;
+                    }
+
+                    kafkaMessages = {};
+
+                    return Promise.all(tasks).then(() => null);
+                },
                 initKafka({clientId, broker}) {
                     kafka = new Kafka({
                         clientId: clientId,
