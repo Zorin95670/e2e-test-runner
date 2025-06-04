@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.6](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.5...v0.1.6) (2025-06-04)
+
+
+### Features
+
+* add step to find kafka message with type ([0578aea](https://github.com/Zorin95670/cypress-test-runner/commit/0578aea63cf780765a9ea6131b3e7f6ae581bfb5))
+* add step to log all kafka messages ([c81c82c](https://github.com/Zorin95670/cypress-test-runner/commit/c81c82cd3c0ebd99b672613d853accca035c903f))
+
+
+### Bug Fixes
+
+* saving kafka message with wrong encoding ([288280e](https://github.com/Zorin95670/cypress-test-runner/commit/288280ea692c6b63be599fc33dd0ee5aa768df37))
+
 ### [0.1.5](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.4...v0.1.5) (2025-06-04)
 
 
