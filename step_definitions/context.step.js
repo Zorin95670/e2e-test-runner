@@ -23,7 +23,11 @@ Then('I expect {string} is {string} as {string}', (templatedExpected, templatedV
         const expected = convert(render(templatedExpected, context), type);
         const value = convert(render(templatedValue, context), type);
 
-        expect(value).to.equal(expected);
+        if (type === 'json') {
+            expect(value).to.deep.equal(expected);
+        } else {
+            expect(value).to.equal(expected);
+        }
     });
 });
 
