@@ -1,11 +1,11 @@
-import {After, Before, Then} from "@badeball/cypress-cucumber-preprocessor";
+import {Before, Then} from "@badeball/cypress-cucumber-preprocessor";
 import {convert, render} from "./utils";
 
 Before(() => {
     cy.resetContext();
 });
 
-After(() => {
+afterEach(() => {
     cy.resetContext();
 });
 
