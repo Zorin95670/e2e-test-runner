@@ -7,6 +7,7 @@ const createEsbuildPlugin =
 const dotenv = require("dotenv");
 const path = require('path');
 const {Kafka, logLevel} = require('kafkajs');
+const he = require('he');
 
 dotenv.config();
 
@@ -88,7 +89,7 @@ module.exports = defineConfig({
                                     kafkaMessages[topic] = [];
                                 }
 
-                                kafkaMessages[topic].push(message.value.toString());
+                                kafkaMessages[topic].push(he.decode(message.value.toString()));
                             },
                         }));
                     return null;
