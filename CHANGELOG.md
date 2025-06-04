@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.7](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.6...v0.1.7) (2025-06-04)
+
+
+### Bug Fixes
+
+* resetting context after each scenario ([1dbeb16](https://github.com/Zorin95670/cypress-test-runner/commit/1dbeb16954b7bf9b6e747f6fec282b28fdce3e9e))
+
 ### [0.1.6](https://github.com/Zorin95670/cypress-test-runner/compare/v0.1.5...v0.1.6) (2025-06-04)
 
 
