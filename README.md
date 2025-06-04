@@ -815,7 +815,16 @@ Then I expect a message on Kafka topic "<topic>" equals to "<value>"
 Then I expect a message on Kafka topic "orders" equals to "{\"orderId\":123}"
 ```
 
-9. Expect a message on a Kafka topic to be equal to a multi-line string
+9. Expect a message on a Kafka topic to be equal to a provided type
+
+```gherkin
+Then I expect a message on Kafka topic "<topic>" equals to "<value>" as "<type>"
+
+# Example:
+Then I expect a message on Kafka topic "orders" equals to "{\"orderId\":123}" as "json"
+```
+
+10. Expect a message on a Kafka topic to be equal to a multi-line string
 
 ```gherkin
 Then I expect a message on Kafka topic "<topic>" equals to:
@@ -836,7 +845,7 @@ Then I expect a message on Kafka topic "orders" equals to:
 """
 ```
 
-10. Expect a message on a Kafka topic contains a substring
+11. Expect a message on a Kafka topic contains a substring
 
 ```gherkin
 Then I expect a message on Kafka topic "<topic>" contains "<value>"
@@ -845,7 +854,7 @@ Then I expect a message on Kafka topic "<topic>" contains "<value>"
 Then I expect a message on Kafka topic "orders" contains "shipped"
 ```
 
-11. Expect a message on a Kafka topic contains a multi-line string
+12. Expect a message on a Kafka topic contains a multi-line string
 
 ```gherkin
 Then I expect a message on Kafka topic "<topic>" contains:
@@ -864,7 +873,7 @@ Then I expect a message on Kafka topic "orders" contains:
 """
 ```
 
-12. Expect a message on a Kafka topic matches a regex
+13. Expect a message on a Kafka topic matches a regex
 
 ```gherkin
 Then I expect a message on Kafka topic "<topic>" matches regex "<regex>"
@@ -873,7 +882,7 @@ Then I expect a message on Kafka topic "<topic>" matches regex "<regex>"
 Then I expect a message on Kafka topic "orders" matches regex "^\\{.*\"status\":\\s*\"shipped\".*\\}$"
 ```
 
-13. Log kafka messages
+14. Log kafka messages
 
 ```gherkin
 Then I log kafka messages
@@ -979,6 +988,7 @@ When I send a Kafka message on the topic "<topic>" with body:
 """
 Then I expect <count> message(s) received on Kafka topic "<topic>"
 Then I expect a message on Kafka topic "<topic>" equals to "<value>"
+Then I expect a message on Kafka topic "<topic>" equals to "<value>" as "<type>"
 Then I expect a message on Kafka topic "<topic>" equals to:
 """
 {

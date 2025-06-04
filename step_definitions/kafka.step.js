@@ -1,5 +1,5 @@
 import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {render} from "./utils";
+import {convert, render} from "./utils";
 
 afterEach(() => {
     cy.task('clearKafka');
@@ -71,6 +71,27 @@ Then('I expect a message on Kafka topic {string} equals to {string}', (templated
         return cy.task('getKafkaMessages', {topic});
     }).then((messages) => {
         const found = messages.some(msg => msg === message);
+
+        expect(found).to.equal(true);
+    });
+});
+
+Then('I expect a message on Kafka topic {string} equals to {string} as {string}', (templatedTopic, templatedMessage, type) => {
+    let message;
+    return cy.getContext().then((context) => {
+        const topic = render(templatedTopic, context);
+        message = convert(render(templatedMessage, context), type);
+
+        return cy.task('getKafkaMessages', {topic});
+    }).then((messages) => {
+        const found = messages.some(msg => {
+            if ('json' !== type) {
+                return msg === message;
+            }
+
+            return JSON.stringify(JSON.parse(msg)) === JSON.stringify(message);
+        });
+
 
         expect(found).to.equal(true);
     });
