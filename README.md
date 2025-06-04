@@ -231,6 +231,23 @@ Then I store "userId" as "{{ response.body.id }}" in context
 
 ---
 
+5. Store a raw value in context
+
+```gherkin
+Then I store as "<value>":
+"""
+My data
+"""
+
+# Example:
+Then I store as "data":
+"""
+My data
+"""
+```
+
+---
+
 ### 🌐 HTTP Requests
 
 1. Basic request
@@ -865,6 +882,10 @@ Then I expect a message on Kafka topic "orders" matches regex "^\\{.*\"status\":
 Then I log "<value>"
 Then I wait <seconds>s
 Then I store "<key>" as "<value>" in context
+Then I store as "<value>":
+"""
+My data
+"""
 
 # 🌐 HTTP Requests
 Given I set http header "<key>" with "<value>"
