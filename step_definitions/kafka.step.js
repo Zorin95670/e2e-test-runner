@@ -131,3 +131,7 @@ Then('I expect a message on Kafka topic {string} matches regex {string}', (templ
         expect(found).to.equal(true);
     });
 });
+
+Then('I log kafka messages', () => {
+    cy.task('logKafkaMessages');
+})
