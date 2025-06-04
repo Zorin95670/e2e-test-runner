@@ -31,14 +31,25 @@ Then('I expect {string} is {string} as {string}', (templatedExpected, templatedV
     });
 });
 
-Then('I store "{string}" as "{string}" in context', (key, templatedValue) => {
+Then('I store {string} as {string} in context', (key, templatedValue) => {
     cy.getContext().then((context) => {
         const value = render(templatedValue, context);
-        const { ctx } = context;
+        const {ctx} = context;
 
         ctx[key] = value;
 
-        return cy.setContext({ ctx });
+        return cy.setContext({ctx});
+    });
+});
+
+Then('I store as {string}:', (key, docString) => {
+    cy.getContext().then((context) => {
+        const value = render(docString, context);
+        const {ctx} = context;
+
+        ctx[key] = value;
+
+        return cy.setContext({ctx});
     });
 });
 
