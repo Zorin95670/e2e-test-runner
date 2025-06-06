@@ -2,6 +2,7 @@ import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
 import nunjucks from "nunjucks";
 import {getDataTable, render} from "./utils";
 
+
 When('I request {string} with method {string}', (templatedUrl, method) => {
     cy.getContext().then((context) => {
         const url = nunjucks.renderString(templatedUrl, context);
@@ -43,6 +44,31 @@ When('I request {string} with method {string} with body:', (templatedUrl, method
             headers: {...context.httpHeaders},
             failOnStatusCode: false
         }).then((response) => cy.setContext({response}));
+    });
+});
+
+When('I request {string} with method {string} with JSON body:', (templatedUrl, method, docString) => {
+    cy.getContext().then((context) => {
+        const url = nunjucks.renderString(templatedUrl, context);
+
+        let body;
+        // we disable autoescape (that would put some Html entities)
+        const env = new nunjucks.Environment(null, { autoescape: false });
+        const rendered = env.renderString(docString, context);
+        try {
+            body = JSON.parse(rendered);
+        } catch (e) {
+            // fallback to raw string
+            body = rendered;
+        }
+
+        cy.request({
+            method,
+            url,
+            body,
+            headers: { ...context.httpHeaders },
+            failOnStatusCode: false
+        }).then((response) => cy.setContext({ response }));
     });
 });
 
