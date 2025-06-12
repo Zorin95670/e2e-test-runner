@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 const path = require('path');
 const {Kafka, logLevel} = require('kafkajs');
 const he = require('he');
+const { Client } = require('ldapts');
 
 dotenv.config();
 
@@ -31,6 +32,8 @@ module.exports = defineConfig({
             let producer;
             let consumer;
             let kafkaMessages = {};
+            let ldapClient;
+            let ldapResults = [];
 
             on('task', {
                 log(message) {
@@ -100,7 +103,66 @@ module.exports = defineConfig({
                 },
                 getKafkaMessages({topic}) {
                     return kafkaMessages[topic] || [];
+                },
+                clearLdap() {
+                    if (ldapClient) {
+                        ldapClient.unbind();
+                        ldapResults = [];
+                    }
+                    return null;
+                },
+                // for doc about ldapts, see https://github.com/ldapts/ldapts
+                async initLdap({url, bindDn, password}) {
+                    // TODO could be better to initiate timeouts, connectsTimeouts?
+                    ldapClient = new Client({
+                        url: url,
+                        timeout: 5000,
+                        connectTimeout: 10000,
+                        strictDN: true
+                    });
+                    try {
+                        await ldapClient.bind(bindDn, password);
+                    }
+                    catch (err) {
+                        console.error('Ldap bind error:', err);
+                    }
+
+                    return null;
+                },
+                async runLdapSearch({baseDn, filter, attributes}) {
+
+                    const opts = {
+                        filter: filter,
+                        scope: 'sub',
+                        attributes: attributes,
+                    };
+
+                    try {
+                        const entries = await ldapClient.search(baseDn, opts);
+                        // entries are returned into a specific property
+                        if (entries.searchEntries) {
+                            ldapResults = entries.searchEntries;
+                        }
+                    }
+                    catch (err) {
+                        console.error('Ldap search error:', err)
+                    }
+                    return null;
+                },
+                getLdapResults() {
+                    return ldapResults;
+                },
+                deleteLdapResults() {
+                    try {
+                        ldapResults.forEach( entry => ldapClient.del(entry.dn));
+                        ldapResults = [];
+                    }
+                    catch (err) {
+                        console.error('Ldap delete error:', err)
+                    }
+                    return null;
                 }
+
             });
 
             return config;

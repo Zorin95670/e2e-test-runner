@@ -890,6 +890,44 @@ Then I log kafka messages
 
 ---
 
+### 🔡 Ldap directory
+
+1. Setup Ldap client with url, bind dn and password
+
+```gherkin
+Given I setup Ldap with url "<url>" bind dn "<bindDn>" and password "<password>"
+
+# Example:
+Given I setup Ldap with url "ldap://localhost:389" bind dn "cn=admin,dc=company,dc=com" and password "my_password"
+```
+
+2. Search ldap results with base Dn, filter and attributes
+
+```gherkin
+Given I search ldap results on base dn "<baseDn>" with filter "<filter>" and attributes "<attributes>"
+
+# Example:
+Given I search ldap results on base dn "ou=users,dc=company,dc=com" with filter "mail=john.doe@example.com" and attributes "cn sn mail"
+```
+
+3. Expect search results to a given length
+
+```gherkin
+Given I expect "<expectedLength>" ldap results
+# Example:
+Given I expect 2 ldap results
+```
+
+4. Delete all search results previously found
+
+```gherkin
+Given I delete all ldap results
+# Example:
+Given I delete all ldap results
+```
+
+---
+
 ### ✅ Step Summary
 
 ```gherkin
