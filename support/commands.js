@@ -2,6 +2,7 @@ let context = {
     env: Cypress.env(),
     ctx: {},
     httpHeaders: {},
+    originUrl: null,
 };
 
 Cypress.Commands.add('getContext', () => context);
@@ -15,5 +16,6 @@ Cypress.Commands.add('resetContext', () => {
         env: Cypress.env(),
         ctx: {},
         httpHeaders: {},
+        originUrl: null,
     };
 });
