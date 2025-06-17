@@ -892,7 +892,7 @@ Then I log kafka messages
 
 ### 🔡 Ldap directory
 
-1. Setup Ldap client with url, bind dn and password
+1. Setup ldap client with url, bind dn and password
 
 ```gherkin
 Given I setup Ldap with url "<url>" bind dn "<bindDn>" and password "<password>"
@@ -924,6 +924,35 @@ Given I expect 2 ldap results
 Given I delete all ldap results
 # Example:
 Given I delete all ldap results
+```
+
+5. Add a new ldap entry with dn and with raw attributes
+
+```gherkin
+Given I add a ldap entry with dn "<dn>" and with attributes:
+# Example:
+Given I add a ldap entry with dn "uid=c1aa97e9-fdff-4b81-b468-0cb41be3e550,dc=company,dc=com" and with attributes:
+"""
+{
+    "objectClass": "top",
+    "objectClass": "person",
+    "objectClass": "organizationalPerson",
+    "objectClass": "inetOrgPerson",
+    "uid": "c1aa97e9-fdff-4b81-b468-0cb41be3e550",
+    "cn": "John Doe",
+    "sn": "Doe",
+    "mail": "john.doe@example.com",
+    "givenName": "John"
+}
+"""
+```
+
+6. Add a new ldap entry with dn and with attributes
+
+```gherkin
+Given I add a ldap entry with dn "<dn>" and with attributes <attributes>
+# Example:
+Given I add a ldap entry with dn "uid=c1aa97e9-fdff-4b81-b468-0cb41be3e550,dc=company,dc=com" and with attributes "{ ... }"
 ```
 
 ---
