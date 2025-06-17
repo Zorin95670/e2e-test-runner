@@ -5,7 +5,7 @@ afterEach(() => {
     cy.task('clearLdap');
 });
 
-Given('I setup Ldap with url {string} bind dn {string} and password {string}', (templatedUrl, templatedBindDn, templatedPassword) => {
+Given('I setup ldap with url {string} bind dn {string} and password {string}', (templatedUrl, templatedBindDn, templatedPassword) => {
     cy.getContext().then((context) => {
         const url = render(templatedUrl, context);
         const bindDn = render(templatedBindDn, context);
@@ -25,23 +25,36 @@ When('I search ldap results on base dn {string} with filter {string} and attribu
     });
 });
 
-Then('I expect {int} ldap results', (expectedLength) => {
-    cy.getContext().then((context) => {
+When('I add a ldap entry with dn {string} and with attributes:', (templatedEntryDn, docString) => {
+    return cy.getContext().then((context) => {
+        const entryDn = render(templatedEntryDn, context);
+        const entry = JSON.parse(render(docString, context));
 
-        return cy.getContext().then((context) => {
-            return cy.task('getLdapResults');
-        }).then((messages) => {
-            expect(messages.length).to.equal(parseInt(expectedLength, 10));
-        });
+        return cy.task('addLdapEntry', {entryDn, entry});
     });
 });
 
+When('I add a ldap entry with dn {string} and with attributes {string}', (templatedEntryDn, templatedValue) => {
+    return cy.getContext().then((context) => {
+        const entryDn = render(templatedEntryDn, context);
+        const entry = JSON.parse(render(templatedValue, context));
+
+        return cy.task('addLdapEntry', {entryDn, entry});
+    });
+});
+
+Then('I expect {int} ldap results', (expectedLength) => {
+
+    cy.getContext().then((context) => {
+        return cy.task('getLdapResults');
+    }).then((messages) => {
+        expect(messages.length).to.equal(parseInt(expectedLength, 10));
+    });
+});
 
 Then('I delete all ldap results', () => {
     cy.getContext().then((context) => {
-        return cy.getContext().then((context) => {
-            return cy.task('deleteLdapResults');
-        })
+        return cy.task('deleteLdapResults');
     });
 });
 

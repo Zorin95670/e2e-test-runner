@@ -161,6 +161,15 @@ module.exports = defineConfig({
                         console.error('Ldap delete error:', err)
                     }
                     return null;
+                },
+                addLdapEntry({entryDn, entry}) {
+                    try {
+                        ldapClient.add(entryDn, entry);
+                    }
+                    catch (err) {
+                        console.error('Ldap add error:', err)
+                    }
+                    return null;
                 }
 
             });
