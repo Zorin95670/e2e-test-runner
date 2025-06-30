@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.1.0...v1.2.0) (2025-06-30)
+
+
+### Features
+
+* ldap add can be useful ([688208a](https://github.com/Zorin95670/cypress-test-runner/commit/688208adae8b487da5e0c985f39f43951b9c7428))
+
 ## [1.1.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.0.1...v1.1.0) (2025-06-14)
 
 
