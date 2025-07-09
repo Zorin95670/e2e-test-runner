@@ -312,10 +312,16 @@ Then I expect status code is 200
 2. Compare templated values
 
 ```gherkin
+Then I expect "<value>" is empty
+Then I expect "<value>" is not empty
 Then I expect "<value>" is "<expected>"
+Then I expect "<value>" is not "<expected>"
 
 # Example:
+Then I expect "{{ response.body }}" is empty
+Then I expect "{{ response.body }}" is not empty
 Then I expect "{{ response.status }}" is "200"
+Then I expect "{{ response.status }}" is not "200"
 ```
 
 3. Compare templated values with type
@@ -982,7 +988,10 @@ When I request "<url>" with method "<method>" with body:
 
 # 📥 Response Assertions
 Then I expect status code is <code>
+Then I expect "<value>" is empty
+Then I expect "<value>" is not empty
 Then I expect "<value>" is "<expected>"
+Then I expect "<value>" is not "<expected>"
 Then I expect "<value>" is "<expected>" as "<type>"
 Then I expect "<value>" to have length <number>
 Then I expect "<value>" as "<type>" to have length <number>
