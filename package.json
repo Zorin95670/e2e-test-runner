@@ -6,7 +6,8 @@
   "scripts": {
     "release": "standard-version",
     "lint": "npx gherkin-lint \"$E2E_SPEC_PATTERN\"",
-    "start": "node index.js",
+    "start": "cypress run",
+    "start:ui": "cypress open",
     "test": "node index.js --features=./ --baseUrl=https://www.google.com/"
   },
   "repository": {
