@@ -73,6 +73,8 @@ npm install -g dotenv-cli
 
 ```bash
 dotenv -e ../.env -- npm run start
+# With ui
+dotenv -e ../.env -- npm run start:ui
 ```
 
 ### 🐳 Run via Docker
