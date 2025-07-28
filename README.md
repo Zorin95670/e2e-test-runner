@@ -24,7 +24,7 @@ applications.
 ### Option 1: Clone into your project
 
 ```bash
-git clone https://github.com/your-org/e2e-test-runner e2e
+git clone https://github.com/zorin95670/e2e-test-runner e2e
 ```
 
 Make sure to include `e2e` in your `.gitignore` if it's only for local use.
@@ -32,7 +32,7 @@ Make sure to include `e2e` in your `.gitignore` if it's only for local use.
 ### Option 2: Use as a Git submodule
 
 ```bash
-git submodule add https://github.com/your-org/e2e-test-runner e2e
+git submodule add https://github.com/zorin95670/e2e-test-runner e2e
 ```
 
 Then install dependencies:
@@ -81,6 +81,7 @@ To run the test runner in a Docker container, make sure to:
 
 * Mount the project directory.
 * Provide access to the `.env` file.
+* Set the timezone (e.g., `Europe/Paris`) using the `TZ` environment variable.
 * Connect the container to the appropriate Docker network (e.g., to communicate with your application under test).
 
 Example:
@@ -89,12 +90,16 @@ Example:
 docker build e2e -t e2e-test-runner
 docker run --rm \
   --env-file .env \
+  --env TZ=Europe/Paris \
   --network my-app-network \
   -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features \
   e2e-test-runner
+```
 
-# or one line command:
-docker run --rm --env-file .env --network my-app-network -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features e2e-test-runner
+Or one-line version:
+
+```bash
+docker run --rm --env-file .env --env TZ=Europe/Paris --network my-app-network  -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features e2e-test-runner
 ```
 
 > Replace `my-app-network` with the name of the Docker network your application is running on.
