@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.3.0...v1.4.0) (2025-07-28)
+
+
+### Features
+
+* add checkbox verification ([d450f7b](https://github.com/Zorin95670/cypress-test-runner/commit/d450f7baf0ef732624faf5336d4e1bb3b19fae58))
+* add new step for to check html attribute ([c3f2557](https://github.com/Zorin95670/cypress-test-runner/commit/c3f2557c86808cc7c3d2531997cee9a9b345ef33))
+* add timezone in docker ([d63c4d6](https://github.com/Zorin95670/cypress-test-runner/commit/d63c4d6793e428911bbf5ae7e49fa758bf6d4462))
+* improve cypress command ([81345dd](https://github.com/Zorin95670/cypress-test-runner/commit/81345dd518640c274d4cb36c169e6acc6a26bb95))
+
 ## [1.3.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.2.0...v1.3.0) (2025-07-09)
 
 
