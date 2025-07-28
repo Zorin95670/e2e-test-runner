@@ -1,221 +1,272 @@
-import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {render} from "./utils";
+import { Given, Then, When } from '@badeball/cypress-cucumber-preprocessor';
+import { render } from './utils';
 
 When('I click on {string}', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).click();
-    });
+    cy.get(selector).click();
+  });
 });
 
 When('I force click on {string}', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).click({ force: true });
-    });
+    cy.get(selector).click({ force: true });
+  });
 });
 
 When('I double click on {string}', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).dblclick();
-    });
+    cy.get(selector).dblclick();
+  });
 });
 
 When('I scroll to {string} into {string}', (position, templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).scrollTo(position);
-    });
+    cy.get(selector).scrollTo(position);
+  });
 });
 
 When('I hover {string} to make it visible', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).invoke('show').should('be.visible');
-    });
+    cy.get(selector).invoke('show').should('be.visible');
+  });
 });
 
 When('I drag {string} onto {string}', (templatedOriginSelector, templatedDestinationSelector) => {
-    cy.getContext().then((context) => {
-        const originSelector = render(templatedOriginSelector, context);
-        const destinationSelector = render(templatedDestinationSelector, context);
+  cy.getContext().then((context) => {
+    const originSelector = render(templatedOriginSelector, context);
+    const destinationSelector = render(templatedDestinationSelector, context);
 
-        cy.get(originSelector).drag(destinationSelector, { force: true });
-    });
+    cy.get(originSelector).drag(destinationSelector, { force: true });
+  });
 });
 
 When('I drag {string} of {int},{int}', (templatedSelector, x, y) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.drag(selector, { x, y });
-    });
+    cy.drag(selector, { x, y });
+  });
 });
 
 When('I select {string} in {string}', (templatedOption, templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
-        const option = render(templatedOption, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
+    const option = render(templatedOption, context);
 
-        cy.get(selector)
-            .click({ force: true })
-            .get(option)
-            .click({ force: true })
-            .wait(500);
-    });
+    cy.get(selector).click({ force: true }).get(option).click({ force: true }).wait(500);
+  });
 });
 
 When('I move {string} of {int},{int}', (templatedSelector, x, y) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).move({ deltaX: x, deltaY: y, force: true });
-    });
+    cy.get(selector).move({ deltaX: x, deltaY: y, force: true });
+  });
 });
 
 Then('I expect the HTML element {string} exists', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).should('exist');
-    });
+    cy.get(selector).should('exist');
+  });
 });
 
 Then('I expect the HTML element {string} not exists', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector, { timeout: 60000 }).should('not.exist');
-    });
+    cy.get(selector, { timeout: 60000 }).should('not.exist');
+  });
 });
 
 Then('I expect the HTML element {string} to be visible', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).should('be.visible');
-    });
+    cy.get(selector).should('be.visible');
+  });
 });
 
 Then('I expect the HTML element {string} to be hidden', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).should('be.hidden');
-    });
+    cy.get(selector).should('be.hidden');
+  });
 });
 
 Then('I expect the HTML element {string} to be disabled', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).should('be.disabled');
-    });
+    cy.get(selector).should('be.disabled');
+  });
 });
 
 Then('I expect the HTML element {string} to be enabled', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).should('not.be.disabled');
-    });
+    cy.get(selector).should('not.be.disabled');
+  });
 });
 
-Then('I expect the HTML element {string} width is {int}', (templatedSelector, width) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+Then('I expect the HTML element {string} is checked', (templatedSelector) => {
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).should((element) => {
-            expect(Math.trunc(element.width())).eq(width);
-        });
+    cy.get(selector).should('be.checked');
+  });
+});
+
+Then('I expect the HTML element {string} is not checked', (templatedSelector) => {
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
+
+    cy.get(selector).should('not.be.checked');
+  });
+});
+
+Then(
+  'I expect the HTML element {string} have an attribute {string} to equal {string}',
+  (templatedSelector, templatedAttribute, templatedValue) => {
+    cy.getContext().then((context) => {
+      const selector = render(templatedSelector, context);
+      const attribute = render(templatedAttribute, context);
+      const value = render(templatedValue, context);
+
+      cy.get(selector).should('have.attr', attribute, value);
     });
+  },
+);
+
+Then('I expect the HTML element {string} width is {int}', (templatedSelector, width) => {
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
+
+    cy.get(selector).should((element) => {
+      expect(Math.trunc(element.width())).eq(width);
+    });
+  });
 });
 
 Then('I expect the HTML element {string} height is {int}', (templatedSelector, height) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).should((element) => {
-            expect(Math.trunc(element.height())).eq(height);
-        });
+    cy.get(selector).should((element) => {
+      expect(Math.trunc(element.height())).eq(height);
     });
+  });
 });
 
-Then('I expect the HTML element {string} to be at position {int},{int}', (templatedSelector, x, y) => {
+Then(
+  'I expect the HTML element {string} to be at position {int},{int}',
+  (templatedSelector, x, y) => {
     cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
+      const selector = render(templatedSelector, context);
 
-        cy.get(selector).should((element) => {
-            expect(Math.trunc(element.position().left)).eq(x);
-            expect(Math.trunc(element.position().top)).eq(y);
-        });
+      cy.get(selector).should((element) => {
+        expect(Math.trunc(element.position().left)).eq(x);
+        expect(Math.trunc(element.position().top)).eq(y);
+      });
     });
-});
+  },
+);
 
-Then('I expect the HTML element {string} to have attribute {string} with value {string}', (templatedSelector, templatedAttribute, templatedValue) => {
+Then(
+  'I expect the HTML element {string} to have attribute {string} with value {string}',
+  (templatedSelector, templatedAttribute, templatedValue) => {
     cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
-        const attribute = render(templatedAttribute, context);
-        const value = render(templatedValue, context);
+      const selector = render(templatedSelector, context);
+      const attribute = render(templatedAttribute, context);
+      const value = render(templatedValue, context);
 
-        cy.get(selector)
-            .invoke('attr', attribute)
-            .should('eq', value);
+      cy.get(selector).invoke('attr', attribute).should('eq', value);
     });
-});
+  },
+);
 
-Then('I expect the HTML element {string} contains {string}', (templatedSelector, templatedValue) => {
+Then(
+  'I expect the HTML element {string} contains {string}',
+  (templatedSelector, templatedValue) => {
     cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
-        const value = render(templatedValue, context);
+      const selector = render(templatedSelector, context);
+      const value = render(templatedValue, context);
 
-        cy.get(selector).contains(value);
+      cy.get(selector).should('contain.text', value);
     });
-});
+  },
+);
 
-Then('I expect the HTML element {string} to have value {string}', (templatedSelector, templatedValue) => {
+Then(
+  'I expect the HTML element {string} not contains {string}',
+  (templatedSelector, templatedValue) => {
     cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
-        const value = render(templatedValue, context);
+      const selector = render(templatedSelector, context);
+      const value = render(templatedValue, context);
 
-        cy.get(selector).should('have.value', value);
+      cy.get(selector).should('not.contain.text', value);
     });
-});
+  },
+);
 
-Then('I expect the HTML element {string} appear {int} time(s) on screen', (templatedSelector, count) => {
+Then(
+  'I expect the HTML element {string} to have value {string}',
+  (templatedSelector, templatedValue) => {
     cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
-        const value = render(templatedValue, context);
+      const selector = render(templatedSelector, context);
+      const value = render(templatedValue, context);
 
-        cy.get(selector).should('have.length', count);
+      cy.get(selector).should('have.value', value);
     });
-});
+  },
+);
+
+Then(
+  'I expect the HTML element {string} appear {int} time(s) on screen',
+  (templatedSelector, count) => {
+    cy.getContext().then((context) => {
+      const selector = render(templatedSelector, context);
+
+      cy.get(selector).should('have.length', count);
+    });
+  },
+);
 
 Then('I clear the text in the HTML element {string}', (templatedSelector) => {
-    cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
-        const value = render(templatedValue, context);
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
 
-        cy.get(selector).type('{selectall}{backspace}');
-    });
+    cy.get(selector).type('{selectall}{backspace}');
+  });
 });
 
-Then('I set the text {string} in the HTML element {string}', (templatedValue, templatedSelector) => {
+Then(
+  'I set the text {string} in the HTML element {string}',
+  (templatedValue, templatedSelector) => {
     cy.getContext().then((context) => {
-        const selector = render(templatedSelector, context);
-        const value = render(templatedValue, context);
+      const selector = render(templatedSelector, context);
+      const value = render(templatedValue, context);
 
-        cy.get(selector).type('{selectall}{backspace}');
-        cy.get(selector).type(value);
+      cy.get(selector).type('{selectall}{backspace}');
+      cy.get(selector).type(value);
     });
-});
+  },
+);
 
 Given('I set the viewport size to {int} px by {int} px', (width, height) => {
-    cy.viewport(parseInt(width, 10), parseInt(height, 10));
+  cy.viewport(parseInt(width, 10), parseInt(height, 10));
 });
