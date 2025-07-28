@@ -139,19 +139,6 @@ Then('I expect the HTML element {string} is not checked', (templatedSelector) =>
   });
 });
 
-Then(
-  'I expect the HTML element {string} have an attribute {string} to equal {string}',
-  (templatedSelector, templatedAttribute, templatedValue) => {
-    cy.getContext().then((context) => {
-      const selector = render(templatedSelector, context);
-      const attribute = render(templatedAttribute, context);
-      const value = render(templatedValue, context);
-
-      cy.get(selector).should('have.attr', attribute, value);
-    });
-  },
-);
-
 Then('I expect the HTML element {string} width is {int}', (templatedSelector, width) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
@@ -194,7 +181,7 @@ Then(
       const attribute = render(templatedAttribute, context);
       const value = render(templatedValue, context);
 
-      cy.get(selector).invoke('attr', attribute).should('eq', value);
+      cy.get(selector).should('have.attr', attribute, value);
     });
   },
 );

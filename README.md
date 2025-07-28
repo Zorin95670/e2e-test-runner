@@ -693,7 +693,16 @@ Then I expect the HTML element "<selector>" contains "<text>"
 Then I expect the HTML element "#message" contains "Welcome!"
 ```
 
-12. Expect element to have a specific value
+12. Expect element to not contain specific text
+
+```gherkin
+Then I expect the HTML element "<selector>" not contains "<text>"
+
+# Example:
+Then I expect the HTML element "#message" not contains "Welcome!"
+```
+
+13. Expect element to have a specific value
 
 ```gherkin
 Then I expect the HTML element "<selector>" to have value "<value>"
@@ -702,13 +711,31 @@ Then I expect the HTML element "<selector>" to have value "<value>"
 Then I expect the HTML element "#username" to have value "john.doe"
 ```
 
-13. Expect element to appear a certain number of times
+14. Expect element to appear a certain number of times
 
 ```gherkin
 Then I expect the HTML element "<selector>" appear <count> time(s) on screen
 
 # Example:
 Then I expect the HTML element ".card" appear 3 time(s) on screen
+```
+
+15. Expect element is checked
+
+```gherkin
+Then I expect the HTML element "<selector>" is checked
+
+# Example:
+Then I expect the HTML element ".checkbox" is checked
+```
+
+16. Expect element is not checked
+
+```gherkin
+Then I expect the HTML element "<selector>" is not checked
+
+# Example:
+Then I expect the HTML element ".checkbox" is not checked
 ```
 
 ---
@@ -1044,11 +1071,14 @@ Then I expect the HTML element "<selector>" to be visible
 Then I expect the HTML element "<selector>" to be hidde
 Then I expect the HTML element "<selector>" to be disabled
 Then I expect the HTML element "<selector>" to be enabled
+Then I expect the HTML element "<selector>" is checked
+Then I expect the HTML element "<selector>" is not checked
 Then I expect the HTML element "<selector>" width is <width>
 Then I expect the HTML element "<selector>" height is <height>
 Then I expect the HTML element "<selector>" to be at position <x>,<y>
 Then I expect the HTML element "<selector>" to have attribute "<attribute>" with value "<value>"
 Then I expect the HTML element "<selector>" contains "<text>"
+Then I expect the HTML element "<selector>" not contains "<text>"
 Then I expect the HTML element "<selector>" to have value "<value>"
 Then I expect the HTML element "<selector>" appear <count> time(s) on screen
 
