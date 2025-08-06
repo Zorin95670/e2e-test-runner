@@ -27,8 +27,15 @@ jobs:
         id: extract_changelog
         run: |
           TAG="${{ steps.get_tag.outputs.tag }}"
-          TAG_ESCAPED=$(printf '%s\n' "$TAG" | sed 's/[][(){}.^$*+?\\/]/\\&/g')
-          awk "/^### \[$TAG_ESCAPED\]/ {printit=1; next} /^### \[.*\]/ {printit=0} printit" CHANGELOG.md > RELEASE_BODY.md
+          TAG_NO_V="${TAG#v}"
+          TAG_ESCAPED=$(printf '%s\n' "$TAG_NO_V" | sed 's/[][(){}.^$*+?\\/]/\\&/g')
+          awk -v tag="$TAG_ESCAPED" '
+            $0 ~ "^### \\[" tag "\\]" {in_block=1}
+            in_block {
+            if ($0 ~ /^### \[[^]]+\]/ && $0 !~ ("^### \\[" tag "\\]")) exit
+            print
+          }
+          ' CHANGELOG.md > RELEASE_BODY.md
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
