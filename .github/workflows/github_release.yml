@@ -14,17 +14,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Get tag name
+      - name: Fetch tags
+        run: git fetch --tags
+
+      - name: Get latest tag
         id: get_tag
-        run: echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+        run: |
+          TAG=$(git for-each-ref --sort=-creatordate --format '%(refname:short)' refs/tags | head -n1)
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
       - name: Extract changelog for this tag
         id: extract_changelog
         run: |
           TAG="${{ steps.get_tag.outputs.tag }}"
-          # Escape dots for grep
-          TAG_ESCAPED=$(echo "$TAG" | sed 's/\./\\./g')
-          # Extract the section between the current tag and the next one
+          TAG_ESCAPED=$(printf '%s\n' "$TAG" | sed 's/[][(){}.^$*+?\\/]/\\&/g')
           awk "/^### \[$TAG_ESCAPED\]/ {printit=1; next} /^### \[.*\]/ {printit=0} printit" CHANGELOG.md > RELEASE_BODY.md
 
       - name: Create GitHub Release
