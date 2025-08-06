@@ -21,7 +21,15 @@ applications.
 
 ## Installation
 
-### Option 1: Clone into your project
+### Option 1: use image from docker hub
+
+You can pull and run the prebuilt image directly from Docker Hub:
+
+```bash
+docker pull vincentmoittie/e2e-test-runner:latest
+```
+
+### Option 2: Clone the project
 
 ```bash
 git clone https://github.com/zorin95670/e2e-test-runner e2e
@@ -29,7 +37,7 @@ git clone https://github.com/zorin95670/e2e-test-runner e2e
 
 Make sure to include `e2e` in your `.gitignore` if it's only for local use.
 
-### Option 2: Use as a Git submodule
+### Option 3: Use as a Git submodule
 
 ```bash
 git submodule add https://github.com/zorin95670/e2e-test-runner e2e
@@ -78,6 +86,33 @@ dotenv -e ../.env -- npm run start:ui
 ```
 
 ### 🐳 Run via Docker
+
+To run the test runner in a Docker container, make sure to:
+
+* Provide access to the `.env` file.
+* Set the timezone (e.g., `Europe/Paris`) using the `TZ` environment variable.
+* Connect the container to the appropriate Docker network (e.g., to communicate with your application under test).
+
+Example:
+
+```bash
+docker run --rm \
+  --env-file .env \
+  --env TZ=Europe/Paris \
+  --network my-app-network \
+  -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features \
+  vincentmoittie:e2e-test-runner:latest
+```
+
+Or one-line version:
+
+```bash
+docker run --rm --env-file .env --env TZ=Europe/Paris --network my-app-network  -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features vincentmoittie:e2e-test-runner:latest
+```
+
+> Replace `my-app-network` with the name of the Docker network your application is running on.
+
+### 🐳 Run via local Docker
 
 To run the test runner in a Docker container, make sure to:
 
