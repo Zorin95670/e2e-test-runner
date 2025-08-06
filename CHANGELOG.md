@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.2](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.1...v1.5.2) (2025-08-06)
+
+
+### Bug Fixes
+
+* push all tags ([465a144](https://github.com/Zorin95670/cypress-test-runner/commit/465a144992708d6f359c27b98216a508a6c7809f))
+
 ### [1.5.1](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.0...v1.5.1) (2025-08-06)
 
 
