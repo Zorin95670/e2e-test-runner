@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.4](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.3...v1.5.4) (2025-08-06)
+
+
+### Bug Fixes
+
+* extracting tag for github release ([b0003a1](https://github.com/Zorin95670/cypress-test-runner/commit/b0003a1f3ac8f919a316def5ec7a76c20e927a71))
+* using last tag on docker push ([623a509](https://github.com/Zorin95670/cypress-test-runner/commit/623a50988e7c20bc83b83b4f384864d934563264))
+
 ### [1.5.3](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.2...v1.5.3) (2025-08-06)
 
 
