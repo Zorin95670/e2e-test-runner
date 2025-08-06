@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.1](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.0...v1.5.1) (2025-08-06)
+
+
+### Bug Fixes
+
+* push tag to execute docker workflow ([af838c4](https://github.com/Zorin95670/cypress-test-runner/commit/af838c4fa7ca393c2589ff65aaee308888d7df88))
+
 ## [1.5.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.4.0...v1.5.0) (2025-08-06)
 
 
