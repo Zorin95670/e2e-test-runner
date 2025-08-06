@@ -240,6 +240,52 @@ When I request "/api/search" with method "GET" with query parameters
 
 ✅ The table is evaluated with Nunjucks, so you can dynamically reference values like `{{ ctx.foo }}`.
 
+### 🏷️ Tags
+
+You can use tags to control which scenarios or features to run during test execution:
+
+#### ✅ Skip a single scenario
+
+Use `@skip` above a scenario to skip it.
+
+```gherkin
+Feature: User login
+
+  @skip
+  Scenario: Valid credentials
+    Given I visit the login page
+    When I enter valid credentials
+    Then I should be redirected to the dashboard
+```
+
+#### ✅ Run only one scenario
+
+Use `@only` above a scenario to run **only that one**. All others will be ignored.
+
+```gherkin
+Feature: User login
+
+  @only
+  Scenario: Invalid credentials
+    Given I visit the login page
+    When I enter invalid credentials
+    Then I should see an error message
+```
+
+#### ✅ Skip an entire feature
+
+Use `@skip` above the `Feature:` line to skip **all scenarios** in that file.
+
+```gherkin
+@skip
+Feature: Password recovery
+
+  Scenario: Request password reset
+    Given I visit the forgot password page
+    When I enter my email
+    Then I should receive a reset email
+```
+
 ## 📚 Step Definitions Reference
 
 ### 🔧 Context Utilities
