@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.4.0...v1.5.0) (2025-08-06)
+
+
+### Features
+
+* publish on docker hub ([75cc0a5](https://github.com/Zorin95670/cypress-test-runner/commit/75cc0a54c8c806ea75f51dd40a0d347a557c9742))
+
 ## [1.4.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.3.0...v1.4.0) (2025-07-28)
 
 
