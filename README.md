@@ -404,12 +404,16 @@ Then I expect "<value>" is empty
 Then I expect "<value>" is not empty
 Then I expect "<value>" is "<expected>"
 Then I expect "<value>" is not "<expected>"
+Then I expect "<value>" contains "<expected>"
+Then I expect "<value>" not contains "<expected>"
 
 # Example:
 Then I expect "{{ response.body }}" is empty
 Then I expect "{{ response.body }}" is not empty
 Then I expect "{{ response.status }}" is "200"
 Then I expect "{{ response.status }}" is not "200"
+Then I expect "{{ response.body.name }}" contains "test"
+Then I expect "{{ response.body.name }}" not contains "test"
 ```
 
 3. Compare templated values with type
@@ -1110,6 +1114,8 @@ Then I expect "<value>" is not "<expected>"
 Then I expect "<value>" is "<expected>" as "<type>"
 Then I expect "<value>" to have length <number>
 Then I expect "<value>" as "<type>" to have length <number>
+Then I expect "<value>" contains "<expected>"
+Then I expect "<value>" not contains "<expected>"
 
 # 🔍 Resource Assertions
 Then I expect one resource of "<value>" equals to "<expected>"
