@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.5...v1.6.0) (2025-09-19)
+
+
+### Features
+
+* add contains and not contains steps ([3032234](https://github.com/Zorin95670/cypress-test-runner/commit/30322346d69fb6a78abf44566e8f007d58506048))
+
 ### [1.5.5](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.4...v1.5.5) (2025-08-06)
 
 
