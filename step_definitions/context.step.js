@@ -34,7 +34,6 @@ Then('I expect {string} is not {string}', (templatedExpected, templatedValue) =>
         expect(value).not.to.equal(expected);
     });
 });
-
 Then('I expect {string} is not empty', (templatedValue) => {
     cy.getContext().then((context) => {
         const value = render(templatedValue, context);
@@ -42,6 +41,7 @@ Then('I expect {string} is not empty', (templatedValue) => {
         expect(value).to.not.be.empty;
     });
 });
+
 
 Then('I expect {string} is {string} as {string}', (templatedExpected, templatedValue, type) => {
     cy.getContext().then((context) => {
@@ -53,6 +53,24 @@ Then('I expect {string} is {string} as {string}', (templatedExpected, templatedV
         } else {
             expect(value).to.equal(expected);
         }
+    });
+});
+
+Then('I expect {string} contains {string}', (templatedExpected, templatedValue) => {
+    cy.getContext().then((context) => {
+        const expected = render(templatedExpected, context);
+        const value = render(templatedValue, context);
+
+        expect(expected).to.contain(value);
+    });
+});
+
+Then('I expect {string} not contains {string}', (templatedExpected, templatedValue) => {
+    cy.getContext().then((context) => {
+        const expected = render(templatedExpected, context);
+        const value = render(templatedValue, context);
+
+        expect(expected).to.not.contain(value);
     });
 });
 
