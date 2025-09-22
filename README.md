@@ -630,6 +630,52 @@ Then I expect the current URL no longer matches ".*\\/splash$"
 
 ---
 
+### 🌍 Cross-Origin Support
+
+When testing applications that involve **cross-domain navigation** (e.g., your app redirects to a third-party login page or an external service), Cypress blocks interactions with elements on a different origin by default due to its same-origin policy.
+
+To handle this, you can set an **origin URL** in the context. When set, all HTML element interactions and assertions will automatically be wrapped in a `cy.origin()` call, allowing Cypress to operate on elements from that cross-domain origin.
+
+This is **entirely optional** — if no origin URL is set, steps behave as usual.
+
+1. Set the origin URL
+
+```gherkin
+Given I set origin url as "<url>"
+
+# Example:
+Given I set origin url as "https://auth.external-provider.com"
+```
+
+2. Reset the origin URL (return to default same-origin behavior)
+
+```gherkin
+Given I reset origin url
+
+# Example:
+Given I reset origin url
+```
+
+**Example scenario:**
+
+```gherkin
+Scenario: Login via external identity provider
+  Given I visit "{{ env.APP_URL }}/login"
+  # The app redirects to an external auth page
+  Given I set origin url as "https://auth.external-provider.com"
+  When I click on "#username-input"
+  Then I set the text "user@example.com" in the HTML element "#username-input"
+  Then I set the text "password123" in the HTML element "#password-input"
+  When I click on "#submit-button"
+  # Back on the original app
+  Given I reset origin url
+  Then I expect current url contains "/dashboard"
+```
+
+> **Note:** The origin URL affects all steps in the **HTML Element Interactions**, **HTML Element Assertions**, and **HTML Element Text Manipulation** sections below.
+
+---
+
 ### 🖱️ HTML Element Interactions
 
 1. Click on an element
@@ -1309,6 +1355,10 @@ Then I expect current url matches "<regex>"
 Then I expect the current URL no longer is "<url>"
 Then I expect the current URL no longer contains "<text>"
 Then I expect the current URL no longer matches "<regex>"
+
+# 🌍 Cross-Origin Support (optional)
+Given I set origin url as "<url>"
+Given I reset origin url
 
 # 🖱️ HTML Element Interactions
 When I click on "<selector>"
