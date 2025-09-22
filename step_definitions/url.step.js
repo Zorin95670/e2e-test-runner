@@ -64,3 +64,14 @@ Then('I expect current url matches {string}', (templatedExpectedUrl) => {
         cy.url().should('match', new RegExp(expectedUrl));
     });
 });
+
+Given('I set origin url as {string}', (templatedUrl) => {
+    cy.getContext().then((context) => {
+        const url = render(templatedUrl, context);
+        cy.setContext({ originUrl: url });
+    });
+});
+
+Given('I reset origin url', () => {
+    cy.setContext({ originUrl: null });
+});
