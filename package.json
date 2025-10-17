@@ -45,6 +45,7 @@
     "kafkajs": "^2.2.4",
     "ldapts": "^8.0.1",
     "nunjucks": "^3.2.4",
+    "pg": "^8.16.3",
     "semantic-release": "^24.2.3"
   },
   "cypress-cucumber-preprocessor": {

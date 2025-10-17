@@ -9,6 +9,7 @@ const path = require('path');
 const {Kafka, logLevel} = require('kafkajs');
 const he = require('he');
 const { Client } = require('ldapts');
+const { Client: PgClient } = require('pg');
 
 dotenv.config();
 
@@ -34,6 +35,9 @@ module.exports = defineConfig({
             let kafkaMessages = {};
             let ldapClient;
             let ldapResults = [];
+            let dbClient;
+            let dbResults = [];
+            let dbLastQuery = null;
 
             on('task', {
                 log(message) {
@@ -170,7 +174,62 @@ module.exports = defineConfig({
                         console.error('Ldap add error:', err)
                     }
                     return null;
-                }
+                },
+                // You can pass a full connection string or individual parts.
+                initDb({ connectionString, driver, user, password, host, port, database }) {
+                    const cfg = connectionString
+                        ? { connectionString }
+                        : { user, password, host, port, database };
+
+                    // we currenly only manage postgres driver
+                    if (driver === 'postgres' || (connectionString && connectionString.indexOf('postgres') === 0)) {
+                        dbClient = new PgClient(cfg);
+                        dbClient.connect();
+                    }
+                    else {
+                        throw new Error("Unknown db protocol, only postgres managed currently");
+                    }
+                    return null;
+                },
+
+                /**
+                 * sqlRequest:   string  the whole sql request with optional $1, $2, etc. placeholders
+                 * values:       array   (optional) values to bind to placeholders
+                 *
+                 * Examples:
+                 * - Raw SQL: { sqlRequest: "SELECT * FROM users" }
+                 * - Parameterized: { sqlRequest: "INSERT INTO users (name, age) VALUES ($1, $2)", values: ["John", 30] }
+                 */
+                runDbRequest({ sqlRequest, values }) {
+                    dbLastQuery = sqlRequest;
+                    return dbClient
+                        .query(sqlRequest, values)
+                        .then(res => {
+                            dbResults = res.rows || [];
+                            return null;
+                        })
+                        .catch(err => {
+                            console.error('Db query error:', err);
+                            throw err;
+                        });
+                },
+
+                getDbResults() {
+                    return dbResults;
+                },
+
+                clearDb() {
+                    dbResults = [];
+                    dbLastQuery = null;
+                    return null;
+                },
+
+                closeDb() {
+                    if (dbClient) {
+                        return dbClient.end();
+                    }
+                    return null;
+                },
 
             });
 
