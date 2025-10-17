@@ -1082,6 +1082,66 @@ Given I add a ldap entry with dn "uid=c1aa97e9-fdff-4b81-b468-0cb41be3e550,dc=co
 
 ---
 
+### 📦 Database
+
+1. Setup db client with connection string
+
+```gherkin
+Given I setup database with connection string "<connectionString>"
+
+# Example:
+Given I setup database with connection string "postgres://user:password@localhost:5432/db"
+```
+
+2. Setup db client with full connection details
+
+```gherkin
+Given I setup database with driver "<driver>" host "<host>" port <port> user "<user>" password "<password>" database "<database>"
+# Example:
+Given I setup database with driver "postgres" host "localhost" port 5432 user "user" password "password" database "db"
+```
+
+3. Search db results on table with filter and columns
+
+```gherkin
+Given I search db table "<table>" with filter "<filter>" and columns "<columns>"
+
+# Example:
+Given I search db table "users" with filter "name = 'doe' and surname = 'john'" and columns "id name surname"
+```
+
+3. Expect db search results to a given length
+
+```gherkin
+Given I expect "<expectedLength>" db results
+# Example:
+Given I expect 2 db results
+```
+
+4. Delete all search results previously found
+
+```gherkin
+Given I delete all db results
+# Example:
+Given I delete all db results
+```
+
+5. Add a new ldap entry with dn and with raw attributes
+
+```gherkin
+Given I add a row to table "<table>" with values "<values>"
+# Example:
+Given I add a row to table "users" with values
+"""
+{
+    "name": "Doe",
+    "surname": "John",
+}
+"""
+```
+
+---
+
 ### ✅ Step Summary
 
 ```gherkin

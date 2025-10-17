@@ -2,6 +2,49 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 1.7.0 (2025-09-22)
+
+
+### Features
+
+* add checkbox verification ([d450f7b](https://github.com/Zorin95670/cypress-test-runner/commit/d450f7baf0ef732624faf5336d4e1bb3b19fae58))
+* add contains and not contains steps ([3032234](https://github.com/Zorin95670/cypress-test-runner/commit/30322346d69fb6a78abf44566e8f007d58506048))
+* add new step for to check html attribute ([c3f2557](https://github.com/Zorin95670/cypress-test-runner/commit/c3f2557c86808cc7c3d2531997cee9a9b345ef33))
+* add new step to store docString in context ([75fedd2](https://github.com/Zorin95670/cypress-test-runner/commit/75fedd2315593c58165c726b93f56e5ae7a7a84c))
+* add not, empty and not empty assertions ([fbd410b](https://github.com/Zorin95670/cypress-test-runner/commit/fbd410b4ea2ffa7f77865890aaaefe392a88affe))
+* add step definition for html manipulation ([a2b7149](https://github.com/Zorin95670/cypress-test-runner/commit/a2b7149bf691c118be096fce7764fd68d170ade0))
+* add step definition for kafka ([0d4b2fd](https://github.com/Zorin95670/cypress-test-runner/commit/0d4b2fd4eea094e89da891c832b6ea4771270f7d))
+* add step definition for localstorage manipulation ([f494768](https://github.com/Zorin95670/cypress-test-runner/commit/f4947687779c45a1f551796529178f12086202e5))
+* add step definition for url manipulation ([d5ff2e9](https://github.com/Zorin95670/cypress-test-runner/commit/d5ff2e9c9a78a59aa5ec87898cae696482e6d0b7))
+* add step definition for using context ([50947b9](https://github.com/Zorin95670/cypress-test-runner/commit/50947b992285722189b3d1620e018b281f0cdc18))
+* add step definition for using http ([f159515](https://github.com/Zorin95670/cypress-test-runner/commit/f15951585ecc9819402f2e3c59a981c2b5140ca8))
+* add step definition for utilities ([3ac295f](https://github.com/Zorin95670/cypress-test-runner/commit/3ac295f58a076505a3baddfd07619517c3072b56))
+* add step to find kafka message with type ([0578aea](https://github.com/Zorin95670/cypress-test-runner/commit/0578aea63cf780765a9ea6131b3e7f6ae581bfb5))
+* add step to log all kafka messages ([c81c82c](https://github.com/Zorin95670/cypress-test-runner/commit/c81c82cd3c0ebd99b672613d853accca035c903f))
+* add step to manage http header ([57dd187](https://github.com/Zorin95670/cypress-test-runner/commit/57dd1870c19bfaa1a8b4a9ad15cf0745bcf53df4))
+* add timezone in docker ([d63c4d6](https://github.com/Zorin95670/cypress-test-runner/commit/d63c4d6793e428911bbf5ae7e49fa758bf6d4462))
+* after each scenario clear kafka ([182b382](https://github.com/Zorin95670/cypress-test-runner/commit/182b3824c5e60eb28e3b8072d16d3a442d46ab65))
+* improve cypress command ([81345dd](https://github.com/Zorin95670/cypress-test-runner/commit/81345dd518640c274d4cb36c169e6acc6a26bb95))
+* ldap add can be useful ([688208a](https://github.com/Zorin95670/cypress-test-runner/commit/688208adae8b487da5e0c985f39f43951b9c7428))
+* publish on docker hub ([75cc0a5](https://github.com/Zorin95670/cypress-test-runner/commit/75cc0a54c8c806ea75f51dd40a0d347a557c9742))
+* setup cypress with cucumber ([0bc0dae](https://github.com/Zorin95670/cypress-test-runner/commit/0bc0dae7f3c765fcc0c0b7999c1436d17ebc0a9e))
+* some utilities to perform ldap requests like deletion or search ([c9d29c3](https://github.com/Zorin95670/cypress-test-runner/commit/c9d29c39aac2ca8e5174711ab872bf006b4aba8e))
+
+
+### Bug Fixes
+
+* display json with logging step ([3f1cea1](https://github.com/Zorin95670/cypress-test-runner/commit/3f1cea1c07150a74c1017dec4c47c6f81760b400))
+* extracting tag for github release ([b0003a1](https://github.com/Zorin95670/cypress-test-runner/commit/b0003a1f3ac8f919a316def5ec7a76c20e927a71))
+* json comparaison ([e0dc5ba](https://github.com/Zorin95670/cypress-test-runner/commit/e0dc5baf309fc1909f552cae7b9511b9d8db2c4a))
+* push all tags ([465a144](https://github.com/Zorin95670/cypress-test-runner/commit/465a144992708d6f359c27b98216a508a6c7809f))
+* push tag to execute docker workflow ([af838c4](https://github.com/Zorin95670/cypress-test-runner/commit/af838c4fa7ca393c2589ff65aaee308888d7df88))
+* resetting context after each scenario ([1dbeb16](https://github.com/Zorin95670/cypress-test-runner/commit/1dbeb16954b7bf9b6e747f6fec282b28fdce3e9e))
+* retrieving valid changelog for github release ([44bf63d](https://github.com/Zorin95670/cypress-test-runner/commit/44bf63dba19ae1af62914f394438627da30203e5))
+* saving kafka message with wrong encoding ([288280e](https://github.com/Zorin95670/cypress-test-runner/commit/288280ea692c6b63be599fc33dd0ee5aa768df37))
+* simplify launching runner ([591a6ad](https://github.com/Zorin95670/cypress-test-runner/commit/591a6adeec43a017f36570f3a43d388d547feece))
+* trigger worfklow ([82c97b6](https://github.com/Zorin95670/cypress-test-runner/commit/82c97b68c14946d33081b24722f7244c4dc774b2))
+* using last tag on docker push ([623a509](https://github.com/Zorin95670/cypress-test-runner/commit/623a50988e7c20bc83b83b4f384864d934563264))
+
 ## [1.6.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.5...v1.6.0) (2025-09-19)
 
 

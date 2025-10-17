@@ -9,6 +9,7 @@ const path = require('path');
 const {Kafka, logLevel} = require('kafkajs');
 const he = require('he');
 const { Client } = require('ldapts');
+const { Client: PgClient } = require('pg');
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ const absolutePath = path.resolve(process.env.CYPRESS_FEATURES_PATH);
 module.exports = defineConfig({
     e2e: {
         env: process.env,
-        specPattern: `${absolutePath}/**/*.feature`,
+        specPattern: `${absolutePath}/**/secu*.feature`,
         supportFile: 'support/e2e.js',
         reporter: require.resolve('@badeball/cypress-cucumber-preprocessor/pretty-reporter'),
         async setupNodeEvents(on, config) {
@@ -34,6 +35,9 @@ module.exports = defineConfig({
             let kafkaMessages = {};
             let ldapClient;
             let ldapResults = [];
+            let dbClient;
+            let dbResults = [];
+            let dbLastQuery = null;
 
             on('task', {
                 log(message) {
@@ -170,7 +174,121 @@ module.exports = defineConfig({
                         console.error('Ldap add error:', err)
                     }
                     return null;
-                }
+                },
+                // You can pass a full connection string or individual parts.
+                initDb({ connectionString, driver, user, password, host, port, database }) {
+                    const cfg = connectionString
+                        ? { connectionString }
+                        : { user, password, host, port, database };
+
+                    // we currenly only manage postgres driver
+                    if (cfg.driver === 'postgres' || cfg.connectionString.indexOf('postgres') === 0) {
+                        dbClient = new PgClient(cfg);
+                        dbClient.connect();
+                    }
+                    else {
+                        throw new Error("Unknown db protocol, only postgres managed currently");
+                    }
+                    return null;
+                },
+
+                /**
+                 * table:   string   (e.g. "users")
+                 * filter:  string   (SQL WHERE clause without the word WHERE, e.g. "age > 30 AND name ILIKE '%john%'")
+                 * columns: string   (space separated list, e.g. "id name email")
+                 */
+                runDbSearch({ table, filter, columns }) {
+                    const cols = columns.split(/\s+/).join(', ');
+                    const sql = `SELECT ${cols} FROM ${table}` + (filter ? ` WHERE ${filter}` : '');
+                    console.log(sql);
+
+                    dbLastQuery = sql;
+                    return dbClient
+                        .query(sql)
+                        .then(res => {
+                            dbResults = res.rows;
+                            return null;
+                        })
+                        .catch(err => {
+                            console.error('Db search error:', err);
+                            throw err;
+                        });
+                },
+
+                getDbResults() {
+                    return dbResults;
+                },
+
+                deleteDbResults() {
+                    // nothing to delete
+                    if (!dbLastQuery) return null;
+
+                    // reuse the same WHERE clause we used for the SELECT.
+                    const whereClause = dbLastQuery.split('WHERE')[1];
+                    // no WHERE, nothing to delete
+                    if (!whereClause) return null;
+
+                    const deleteSql = `DELETE FROM ${dbLastQuery
+                        .match(/^SELECT\s+.+?\s+FROM\s+(\S+)/i)[1]} WHERE ${whereClause}`;
+
+                    return dbClient
+                        .query(deleteSql)
+                        .then(() => {
+                            dbResults = [];
+                            dbLastQuery = null;
+                            return null;
+                        })
+                        .catch(err => {
+                            console.error('Db delete error:', err);
+                            throw err;
+                        });
+                },
+
+                addTableRow({ tableName, rowData }) {
+                    if (typeof tableName !== 'string' || !tableName.trim()) {
+                        throw new Error('addTableRow: `tableName` must be a non‑empty string');
+                    }
+                    if (typeof rowData !== 'object' || rowData === null) {
+                        throw new Error('addTableRow: `rowData` must be an object');
+                    }
+
+                    const columns = Object.keys(rowData);
+                    const values  = Object.values(rowData);
+
+                    // We must **quote** identifiers because table/column names may be camelCase or
+                    // reserved words. PostgreSQL double‑quotes are safe as long as we escape any
+                    // embedded double‑quote by doubling it.
+                    const quoteIdent = (ident) => `"${ident.replace(/"/g, '""')}"`;
+
+                    const columnList = columns.map(quoteIdent).join(', ');
+                    const placeholders = columns.map((_, i) => `$${i + 1}`).join(', ');
+
+                    const sql = `INSERT INTO ${quoteIdent(tableName)} (${columnList})
+                                 VALUES (${placeholders})
+                                 RETURNING *;`;
+
+                    return dbClient
+                        .query(sql, values)
+                        .then( () => { return null })
+                        .catch(err => {
+                            console.error('Db create error:', err);
+                            throw err;
+                        });
+
+                },
+
+                clearDb() {
+                    dbResults = [];
+                    dbLastQuery = null;
+                    return null;
+                },
+
+                closeDb() {
+                    if (dbClient) {
+                        return dbClient.end();
+                    }
+                    return null;
+                },
 
             });
 

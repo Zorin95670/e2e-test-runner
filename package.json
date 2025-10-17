@@ -1,6 +1,6 @@
 {
   "name": "e2e-test-runner",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "A project to execute E2E end-to-end tests in a CI pipeline or local environment.",
   "main": "index.js",
   "scripts": {
@@ -45,6 +45,7 @@
     "kafkajs": "^2.2.4",
     "ldapts": "^8.0.1",
     "nunjucks": "^3.2.4",
+    "pg": "^8.16.3",
     "semantic-release": "^24.2.3"
   },
   "cypress-cucumber-preprocessor": {
