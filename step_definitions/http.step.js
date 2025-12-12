@@ -62,3 +62,21 @@ Given('I set http header {string} with {string}', (key, templatedValue) => {
         return cy.setContext({httpHeaders});
     });
 })
+
+Then('I expect http header {string} is {string}', (headerName, templatedExpected) => {
+    cy.getContext().then((context) => {
+        const expected = render(templatedExpected, context);
+        const headerValue = context.response.headers[headerName.toLowerCase()];
+
+        expect(headerValue).to.equal(expected);
+    });
+})
+
+Then('I expect http header {string} contains {string}', (headerName, templatedExpected) => {
+    cy.getContext().then((context) => {
+        const expected = render(templatedExpected, context);
+        const headerValue = context.response.headers[headerName.toLowerCase()];
+
+        expect(headerValue).to.include(expected);
+    });
+})

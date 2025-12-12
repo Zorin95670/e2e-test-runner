@@ -397,7 +397,26 @@ Then I expect status code is <code>
 Then I expect status code is 200
 ```
 
-2. Compare templated values
+2. Check HTTP header exact value
+
+```gherkin
+Then I expect http header "<headerName>" is "<expected>"
+
+# Example:
+Then I expect http header "Content-Type" is "application/json"
+```
+
+3. Check HTTP header contains value
+
+```gherkin
+Then I expect http header "<headerName>" contains "<expected>"
+
+# Example:
+Then I expect http header "Content-Type" contains "text/csv"
+Then I expect http header "Content-Disposition" contains "attachment"
+```
+
+4. Compare templated values
 
 ```gherkin
 Then I expect "<value>" is empty
@@ -416,7 +435,7 @@ Then I expect "{{ response.body.name }}" contains "test"
 Then I expect "{{ response.body.name }}" not contains "test"
 ```
 
-3. Compare templated values with type
+5. Compare templated values with type
 
 ```gherkin
 Then I expect "<value>" is "<expected>" as "<type>"
@@ -425,7 +444,7 @@ Then I expect "<value>" is "<expected>" as "<type>"
 Then I expect "{{ response.status }}" is "200" as "integer"
 ```
 
-4. Check length of value
+6. Check length of value
 
 ```gherkin
 Then I expect "<value>" to have length <number>
@@ -434,7 +453,7 @@ Then I expect "<value>" to have length <number>
 Then I expect "{{ response.body.users }}" to have length 5
 ```
 
-5. Check length with type
+7. Check length with type
 
 ```gherkin
 Then I expect "<value>" as "<type>" to have length <number>
@@ -1107,6 +1126,8 @@ When I request "<url>" with method "<method>" with body:
 
 # 📥 Response Assertions
 Then I expect status code is <code>
+Then I expect http header "<headerName>" is "<expected>"
+Then I expect http header "<headerName>" contains "<expected>"
 Then I expect "<value>" is empty
 Then I expect "<value>" is not empty
 Then I expect "<value>" is "<expected>"
