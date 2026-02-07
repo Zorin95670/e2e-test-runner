@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.6.0...v1.7.0) (2026-02-07)
+
+
+### Features
+
+* add http header checks (is and contains) ([e126e1d](https://github.com/Zorin95670/cypress-test-runner/commit/e126e1d02908cec6dff29005e433f2f8c51f0bfb))
+
 ## [1.6.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.5.5...v1.6.0) (2025-09-19)
 
 
