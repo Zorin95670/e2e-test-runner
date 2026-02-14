@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.7.0...v1.8.0) (2026-02-14)
+
+
+### Features
+
+* adding postgres database support ([551eba6](https://github.com/Zorin95670/cypress-test-runner/commit/551eba66b90f1bbce7c0896c438733be2a3f822f))
+
 ## [1.7.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.6.0...v1.7.0) (2026-02-07)
 
 
