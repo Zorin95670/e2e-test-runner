@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.8.0...v1.9.0) (2026-02-16)
+
+
+### Features
+
+* url origin to be compliant with CORS ([e7bbb87](https://github.com/Zorin95670/cypress-test-runner/commit/e7bbb87b47f1bf9787047bf24d0c6c26239bab10))
+
 ## [1.8.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.7.0...v1.8.0) (2026-02-14)
 
 
