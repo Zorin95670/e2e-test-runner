@@ -1,11 +1,11 @@
 import { Given, Then, When } from '@badeball/cypress-cucumber-preprocessor';
 import { render } from './utils';
 
-function runWithOrigin(context, args, action) {
+function runWithOrigin(context,  action) {
   if (context.originUrl) {
-    return cy.origin(context.originUrl, { args }, action);
+    return cy.origin(context.originUrl, null, action);
   } else {
-    action(args);
+    action();
   }
 }
 
@@ -13,7 +13,7 @@ When('I click on {string}', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).click();
     });
   });
@@ -23,7 +23,7 @@ When('I force click on {string}', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).click({ force: true });
     });
   });
@@ -33,7 +33,7 @@ When('I double click on {string}', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).dblclick();
     });
   });
@@ -43,7 +43,7 @@ When('I scroll to {string} into {string}', (position, templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector, position }, ({ selector, position }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).scrollTo(position);
     });
   });
@@ -53,7 +53,7 @@ When('I hover {string} to make it visible', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).invoke('show').should('be.visible');
     });
   });
@@ -64,7 +64,7 @@ When('I drag {string} onto {string}', (templatedOriginSelector, templatedDestina
     const originSelector = render(templatedOriginSelector, context);
     const destinationSelector = render(templatedDestinationSelector, context);
 
-    runWithOrigin(context, { originSelector, destinationSelector }, ({ originSelector, destinationSelector }) => {
+    runWithOrigin(context, () => {
       cy.get(originSelector).drag(destinationSelector, { force: true });
     });
   });
@@ -74,7 +74,7 @@ When('I drag {string} of {int},{int}', (templatedSelector, x, y) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector, x, y }, ({ selector, x, y }) => {
+    runWithOrigin(context, () => {
       cy.drag(selector, { x, y });
     });
   });
@@ -85,7 +85,7 @@ When('I select {string} in {string}', (templatedOption, templatedSelector) => {
     const selector = render(templatedSelector, context);
     const option = render(templatedOption, context);
 
-    runWithOrigin(context, { selector, option }, ({ selector, option }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).click({ force: true }).get(option).click({ force: true }).wait(500);
     });
   });
@@ -95,7 +95,7 @@ When('I move {string} of {int},{int}', (templatedSelector, x, y) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector, x, y }, ({ selector, x, y }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).move({ deltaX: x, deltaY: y, force: true });
     });
   });
@@ -105,7 +105,7 @@ Then('I expect the HTML element {string} exists', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should('exist');
     });
   });
@@ -115,7 +115,7 @@ Then('I expect the HTML element {string} not exists', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector, { timeout: 60000 }).should('not.exist');
     });
   });
@@ -125,7 +125,7 @@ Then('I expect the HTML element {string} to be visible', (templatedSelector) => 
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should('be.visible');
     });
   });
@@ -135,7 +135,7 @@ Then('I expect the HTML element {string} to be hidden', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should('be.hidden');
     });
   });
@@ -145,7 +145,7 @@ Then('I expect the HTML element {string} to be disabled', (templatedSelector) =>
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should('be.disabled');
     });
   });
@@ -155,7 +155,7 @@ Then('I expect the HTML element {string} to be enabled', (templatedSelector) => 
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should('not.be.disabled');
     });
   });
@@ -165,7 +165,7 @@ Then('I expect the HTML element {string} is checked', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should('be.checked');
     });
   });
@@ -175,7 +175,7 @@ Then('I expect the HTML element {string} is not checked', (templatedSelector) =>
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should('not.be.checked');
     });
   });
@@ -185,7 +185,7 @@ Then('I expect the HTML element {string} width is {int}', (templatedSelector, wi
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector, width }, ({ selector, width }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should((element) => {
         expect(Math.trunc(element.width())).eq(width);
       });
@@ -197,7 +197,7 @@ Then('I expect the HTML element {string} height is {int}', (templatedSelector, h
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector, height }, ({ selector, height }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).should((element) => {
         expect(Math.trunc(element.height())).eq(height);
       });
@@ -211,7 +211,7 @@ Then(
     cy.getContext().then((context) => {
       const selector = render(templatedSelector, context);
 
-      runWithOrigin(context, { selector, x, y }, ({ selector, x, y }) => {
+      runWithOrigin(context, () => {
         cy.get(selector).should((element) => {
           expect(Math.trunc(element.position().left)).eq(x);
           expect(Math.trunc(element.position().top)).eq(y);
@@ -229,7 +229,7 @@ Then(
       const attribute = render(templatedAttribute, context);
       const value = render(templatedValue, context);
 
-      runWithOrigin(context, { selector, attribute, value }, ({ selector, attribute, value }) => {
+      runWithOrigin(context, () => {
         cy.get(selector).should('have.attr', attribute, value);
       });
     });
@@ -243,7 +243,7 @@ Then(
       const selector = render(templatedSelector, context);
       const value = render(templatedValue, context);
 
-      runWithOrigin(context, { selector, value }, ({ selector, value }) => {
+      runWithOrigin(context, () => {
         cy.get(selector).should('contain.text', value);
       });
     });
@@ -257,7 +257,7 @@ Then(
       const selector = render(templatedSelector, context);
       const value = render(templatedValue, context);
 
-      runWithOrigin(context, { selector, value }, ({ selector, value }) => {
+      runWithOrigin(context, () => {
         cy.get(selector).should('not.contain.text', value);
       });
     });
@@ -271,7 +271,7 @@ Then(
       const selector = render(templatedSelector, context);
       const value = render(templatedValue, context);
 
-      runWithOrigin(context, { selector, value }, ({ selector, value }) => {
+      runWithOrigin(context, () => {
         cy.get(selector).should('have.value', value);
       });
     });
@@ -284,7 +284,7 @@ Then(
     cy.getContext().then((context) => {
       const selector = render(templatedSelector, context);
 
-      runWithOrigin(context, { selector, count }, ({ selector, count }) => {
+      runWithOrigin(context, () => {
         cy.get(selector).should('have.length', count);
       });
     });
@@ -295,7 +295,7 @@ Then('I clear the text in the HTML element {string}', (templatedSelector) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);
 
-    runWithOrigin(context, { selector }, ({ selector }) => {
+    runWithOrigin(context, () => {
       cy.get(selector).type('{selectall}{backspace}');
     });
   });
@@ -308,7 +308,7 @@ Then(
       const selector = render(templatedSelector, context);
       const value = render(templatedValue, context);
 
-      runWithOrigin(context, { selector, value }, ({ selector, value }) => {
+      runWithOrigin(context, () => {
         cy.get(selector).type('{selectall}{backspace}');
         cy.get(selector).type(value);
       });
