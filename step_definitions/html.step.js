@@ -319,3 +319,14 @@ Then(
 Given('I set the viewport size to {int} px by {int} px', (width, height) => {
   cy.viewport(parseInt(width, 10), parseInt(height, 10));
 });
+
+When('I set file input {string} with file(s) {string}', (templatedSelector, templatedFilePaths) => {
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
+    const filePaths = render(templatedFilePaths, context).split(',').map(f => f.trim());
+
+    runWithOrigin(context, () => {
+      cy.get(selector).selectFile(filePaths, { force: true });
+    });
+  });
+})

@@ -759,6 +759,19 @@ When I select "<option>" in "<selector>"
 When I select ".option-2" in ".dropdown-menu"
 ```
 
+10. Set file(s) inside an input file
+
+```gherkin
+When I set file input "<selector>" with file "<file-paths>"
+When I set file input "<selector>" with files "<file-paths>"
+
+# Example:
+When I set file input '.myFile[type="file"]' with file "path/to/myFile.txt"
+When I set file input '.myFile[type="file"]' with file "path/to/myFile.txt"
+When I set file input '.myFile[type="file"]' with files "path/to/myFirstFile.txt, path/to/mySecondFile.txt"
+When I set file input '.myFile[type="file"]' with files "path/to/myFirstFile.txt, path/to/mySecondFile.txt"
+```
+
 ---
 
 ### 👁️ HTML Element Assertions
@@ -1370,6 +1383,8 @@ When I drag "<originSelector>" onto "<destinationSelector>"
 When I drag "<selector>" of <x>,<y>
 When I move "<selector>" of <x>,<y>
 When I select "<option>" in "<selector>"
+When I set file input "<selector>" with file "<file-paths>"
+When I set file input "<selector>" with files "<file-paths>"
 
 # 👁️ HTML Element Assertions
 Then I expect the HTML element "<selector>" exists
