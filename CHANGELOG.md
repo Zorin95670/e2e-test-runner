@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.9.0...v1.10.0) (2026-03-02)
+
+
+### Features
+
+* add step to add file inside html file input ([50423a6](https://github.com/Zorin95670/cypress-test-runner/commit/50423a675e08a3b156b97b23da844aa6849fdc5e))
+
 ## [1.9.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.8.0...v1.9.0) (2026-02-16)
 
 
