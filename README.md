@@ -460,7 +460,10 @@ Then I expect "{{ response.body.users }}" to have length 5
 Then I expect "<value>" as "<type>" to have length <number>
 
 # Example:
+# Where response.body.users is [{...}, {...}, {...}, {...}, {...}]
 Then I expect "{{ response.body.users }}" as "json" to have length 5
+# Where response.body is { "name": ..., "test": ... }
+Then I expect "{{ response.body }}" as "json" to have length 2
 ```
 
 ---

@@ -107,8 +107,19 @@ Then('I expect {string} to have length {int}', (templatedValue, expectedLength) 
 Then('I expect {string} as {string} to have length {int}', (templatedValue, type, expectedLength) => {
     cy.getContext().then((context) => {
         const value = convert(render(templatedValue, context), type);
+        let length;
 
-        expect(value.length).to.equal(expectedLength);
+        if (Array.isArray(value)) {
+            length = value.length;
+        } else if (value !== null && typeof value === 'object') {
+            length = Object.keys(value).length;
+        } else if (value !== undefined && value !== null && typeof value.length !== 'undefined') {
+            length = value.length;
+        } else {
+            length = String(value).length;
+        }
+
+        expect(length).to.equal(expectedLength);
     });
 });
 
