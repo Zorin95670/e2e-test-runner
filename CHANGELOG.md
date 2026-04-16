@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.10.0...v1.11.0) (2026-04-16)
+
+
+### Features
+
+* improve step length verification with type ([56556d0](https://github.com/Zorin95670/cypress-test-runner/commit/56556d0c64d55569330bb19a08b39aa2a2e6832b))
+
 ## [1.10.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.9.0...v1.10.0) (2026-03-02)
 
 
