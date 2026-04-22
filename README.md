@@ -337,6 +337,17 @@ My data
 
 ---
 
+6. Store the text content of an HTML element in context
+
+```gherkin
+Then I store the text of the HTML element "<selector>" as "<key>" in context
+
+# Examples:
+Then I store the text of the HTML element "#welcome-message" as "pageTitle" in context
+```
+
+---
+
 ### 🌐 HTTP Requests
 
 1. Basic request
@@ -1323,6 +1334,7 @@ Then I store as "<value>":
 """
 My data
 """
+Then I store the text of the HTML element "<selector>" as "<key>" in context
 
 # 🌐 HTTP Requests
 Given I set http header "<key>" with "<value>"
