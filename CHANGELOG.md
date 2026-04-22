@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.11.0...v1.12.0) (2026-04-22)
+
+
+### Features
+
+* add a rule to store an html element value in the context ([060fac3](https://github.com/Zorin95670/cypress-test-runner/commit/060fac365b9d98bd9f2732a7fd3dff3a525b3d4e))
+
 ## [1.11.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.10.0...v1.11.0) (2026-04-16)
 
 
