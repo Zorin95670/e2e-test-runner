@@ -164,3 +164,18 @@ Then('I expect one resource of {string} contains {string} equals to {string} as 
         expect(result).to.equal(true);
     });
 });
+
+Then(
+    'I store the text of the HTML element {string} as {string} in context',
+    (templatedSelector, key) => {
+        cy.getContext().then((context) => {
+            const selector = render(templatedSelector, context);
+
+            cy.get(selector).then(($el) => {
+                const { ctx } = context;
+                ctx[key] = $el.text();
+                return cy.setContext({ ctx });
+            });
+        });
+    },
+);
