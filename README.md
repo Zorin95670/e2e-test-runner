@@ -68,6 +68,30 @@ CYPRESS_FEATURES_PATH=../src/test/resources/features
 
 You must define this variable in a `.env` file or inject it at runtime.
 
+### 🔒 Optional Environment Variable: `CYPRESS_CHROME_SECURITY_ENABLED`
+
+By default, Cypress enforces Chrome's web security features (CORS, mixed content, certificate validation). This can cause unexpected page reloads or blocked navigation when testing against apps served with **self-signed or untrusted SSL certificates**.
+
+You can disable Chrome's security checks by setting:
+
+```env
+CYPRESS_CHROME_SECURITY_ENABLED=false
+```
+
+* When set to `false`:
+  * `chromeWebSecurity` is disabled in the Cypress config.
+  * The `--ignore-certificate-errors` and `--allow-insecure-localhost` flags are passed to Chrome at launch.
+* When unset or set to `true` (default), Cypress behaves normally with full security checks enabled.
+
+> ⚠️ Only disable this for local/dev/test environments with self-signed certificates. Avoid disabling it when testing against production-like environments.
+
+**Example:**
+
+```env
+CYPRESS_FEATURES_PATH=../src/test/resources/features
+CYPRESS_CHROME_SECURITY_ENABLED=false
+```
+
 ### 📦 Local Execution (with `dotenv`)
 
 To run the test runner locally and load environment variables from a `.env` file:
