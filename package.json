@@ -36,17 +36,17 @@
     "standard-version": "^9.5.0"
   },
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
+    "@badeball/cypress-cucumber-preprocessor": "^26.0.0",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
     "@cypress/browserify-preprocessor": "^3.0.2",
-    "cypress": "^14.3.3",
-    "dotenv": "^16.5.0",
+    "cypress": "^15.20.0",
+    "dotenv": "^17.4.2",
     "he": "^1.2.0",
     "kafkajs": "^2.2.4",
-    "ldapts": "^8.0.1",
+    "ldapts": "^9.0.0",
     "nunjucks": "^3.2.4",
-    "pg": "^8.16.3",
-    "semantic-release": "^24.2.3"
+    "pg": "^8.22.0",
+    "semantic-release": "^25.0.9"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": "step_definitions/**/*.step.js"
