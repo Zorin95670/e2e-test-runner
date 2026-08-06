@@ -14,9 +14,11 @@ const { Client: PgClient } = require('pg');
 dotenv.config();
 
 const absolutePath = path.resolve(process.env.CYPRESS_FEATURES_PATH);
+const chromeSecurityEnabled = process.env.CYPRESS_CHROME_SECURITY_ENABLED !== 'false';
 
 module.exports = defineConfig({
     e2e: {
+        chromeWebSecurity: chromeSecurityEnabled,
         env: process.env,
         specPattern: `${absolutePath}/**/*.feature`,
         supportFile: 'support/e2e.js',
@@ -29,6 +31,15 @@ module.exports = defineConfig({
                     plugins: [createEsbuildPlugin(config)],
                 })
             );
+
+            on('before:browser:launch', (browser, launchOptions) => {
+                if (!chromeSecurityEnabled && browser.family === 'chromium') {
+                    launchOptions.args.push('--ignore-certificate-errors');
+                    launchOptions.args.push('--allow-insecure-localhost');
+                }
+                return launchOptions;
+            });
+
             let kafka;
             let producer;
             let consumer;
