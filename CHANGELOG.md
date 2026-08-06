@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.12.0...v1.13.0) (2026-08-06)
+
+
+### Features
+
+* add CYPRESS_CHROME_SECURITY_ENABLED to bypass cert errors ([5b38cc9](https://github.com/Zorin95670/cypress-test-runner/commit/5b38cc951f267e70d4622c4dda927ef47c0e1686))
+
 ## [1.12.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.11.0...v1.12.0) (2026-04-22)
 
 
