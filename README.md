@@ -12,6 +12,7 @@ applications.
 - 📦 PostgreSQL database testing with parameterized query support
 - ⚙️ Compatible with Cypress and Cucumber ecosystem
 - 🚀 Run tests via Node or Docker
+- 🔢 Deterministic spec execution order (feature files sorted by path)
 
 ## Technologies
 
@@ -91,6 +92,34 @@ CYPRESS_CHROME_SECURITY_ENABLED=false
 CYPRESS_FEATURES_PATH=../src/test/resources/features
 CYPRESS_CHROME_SECURITY_ENABLED=false
 ```
+
+### 🔢 Spec Execution Order
+
+When running with `npm run start` (`cypress run`), the runner lists every `.feature` file found under
+`CYPRESS_FEATURES_PATH` (recursively) and executes them **sorted by path**. The sort is a plain code unit
+comparison, independent of the locale and of the order the filesystem returns entries, so the same set of feature
+files always runs in the same order on every machine and every CI run.
+
+You can rely on it to organise features that depend on each other, for example by prefixing folders or files:
+
+```
+features/
+├── 01-setup/
+│   └── seed-users.feature
+├── 02-api/
+│   ├── groups.feature
+│   └── users.feature
+└── 03-front/
+    └── login.feature
+```
+
+* Sorting compares characters by their code unit, so uppercase letters come before lowercase ones (`B.feature` runs
+  before `a.feature`) and `10-x.feature` runs before `2-x.feature`. Zero-pad numeric prefixes (`02`, `10`) to get the
+  expected order.
+* `--spec` still applies: `npx cypress run --spec "../features/02-api/*.feature"` only runs the matching files, in
+  the same sorted order.
+* `npm run start:ui` (`cypress open`) keeps the original glob so that newly added feature files show up without
+  restarting Cypress.
 
 ### 📦 Local Execution (with `dotenv`)
 
@@ -1490,6 +1519,17 @@ When I execute sql request "<sql>" with values:
 """
 Then I expect <count> database results
 ```
+
+## 🧪 Development
+
+The runner's own Node.js code (for example the feature file discovery in `lib/`) is covered by unit tests based on
+the built-in [`node:test`](https://nodejs.org/api/test.html) runner:
+
+```bash
+npm test
+```
+
+Tests live in `test/` and run on every pull request through GitHub Actions.
 
 ## 🚧 Missing a Step?
 
