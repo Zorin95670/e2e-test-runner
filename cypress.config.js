@@ -10,6 +10,7 @@ const {Kafka, logLevel} = require('kafkajs');
 const he = require('he');
 const { Client } = require('ldapts');
 const { Client: PgClient } = require('pg');
+const {listFeatures} = require('./lib/features');
 
 dotenv.config();
 
@@ -24,6 +25,13 @@ module.exports = defineConfig({
         supportFile: 'support/e2e.js',
         reporter: require.resolve('@badeball/cypress-cucumber-preprocessor/pretty-reporter'),
         async setupNodeEvents(on, config) {
+            // In `cypress run`, replace the glob by the sorted list of feature files so that the
+            // execution order is identical on every machine. `cypress open` keeps the glob to keep
+            // watching for new feature files.
+            if (config.isTextTerminal) {
+                config.specPattern = listFeatures(absolutePath);
+            }
+
             await addCucumberPreprocessorPlugin(on, config);
             on(
                 "file:preprocessor",
