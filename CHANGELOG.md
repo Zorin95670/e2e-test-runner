@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.13.0...v2.0.0) (2026-10-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* add playwright engine and make runner configuration engine-agnostic
+
+### Features
+
+* add engine-agnostic entry point to select the e2e execution engine ([7df1bc4](https://github.com/Zorin95670/cypress-test-runner/commit/7df1bc44f875bb357cf433f116e20fb37e039f68))
+* add playwright engine and make runner configuration engine-agnostic ([821a965](https://github.com/Zorin95670/cypress-test-runner/commit/821a9655cc7d61a71df6aea6ed4d77b65d8f21a2))
+
+
+### Bug Fixes
+
+* align playwright html steps with cypress behavior ([8585362](https://github.com/Zorin95670/cypress-test-runner/commit/8585362bc1d93d88154a8c901a5340fa9ccc290a))
+* remove playwright global test timeout like cypress ([22e1b1a](https://github.com/Zorin95670/cypress-test-runner/commit/22e1b1a189d03cf8a5020ad594bada43ddb3b816))
+* replace Cypress.env removed in cypress 16 by Cypress.expose ([10d6950](https://github.com/Zorin95670/cypress-test-runner/commit/10d6950abacb9acd055a2c6d344c8cd704abbcf2))
+* translate jquery :eq() selectors in playwright engine ([967abdf](https://github.com/Zorin95670/cypress-test-runner/commit/967abdf8da81604f1cfcd64cde08d04d2ca75e68))
+* wait for elements to be in viewport before forced clicks in playwright ([3905810](https://github.com/Zorin95670/cypress-test-runner/commit/390581044b13d12e9e2bc770ed04fed0c70066f8))
+
 ## [1.13.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.12.0...v1.13.0) (2026-08-06)
 
 
