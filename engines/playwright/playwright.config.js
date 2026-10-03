@@ -38,10 +38,15 @@ module.exports = defineConfig({
     // Scenarios run one after the other, as with Cypress, since they may share external state (database, kafka...).
     fullyParallel: false,
     workers: 1,
+    // As with Cypress, a scenario has no global timeout (roundtrip scenarios can be long): only each step is limited.
+    timeout: 0,
     reporter: [['list']],
     use: {
         ...BROWSERS[browser],
         baseURL: process.env.E2E_BASE_URL,
+        // Without a global timeout, actions and navigations would otherwise wait indefinitely.
+        actionTimeout: 10000,
+        navigationTimeout: 60000,
         // Like Cypress, accept self-signed / incomplete certificate chains (local test environments).
         ignoreHTTPSErrors: true,
         screenshot: 'only-on-failure',
