@@ -42,10 +42,14 @@ function locate(page, world, templatedSelector) {
     return page.locator(render(templatedSelector, world).replaceAll(':contains(', ':has-text('));
 }
 
-// Unlike a regular click, a forced click does not wait for the element to stop moving:
-// wait for it first, otherwise elements in an opening animation (dialog, menu) can't be clicked.
+// Unlike a regular click, a forced click does not wait for the element to stop moving and to be on screen:
+// wait for it first, otherwise elements being opened (dialog animation, menu rendered off screen before
+// being positioned) can't be clicked. Scrolling is retried, as it has no effect until the element is positioned.
 async function forceClick(locator) {
-    await locator.scrollIntoViewIfNeeded();
+    await expect(async () => {
+        await locator.scrollIntoViewIfNeeded();
+        await expect(locator).toBeInViewport({ timeout: 500 });
+    }).toPass({ timeout: 5000 });
     await locator.click({ force: true });
 }
 
