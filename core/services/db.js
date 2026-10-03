@@ -1,6 +1,6 @@
 const {Client: PgClient} = require('pg');
 
-class DbTasks {
+class DbService {
     constructor() {
         this.client = null;
         this.results = [];
@@ -63,4 +63,4 @@ class DbTasks {
     }
 }
 
-module.exports = DbTasks;
+module.exports = DbService;

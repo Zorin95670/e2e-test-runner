@@ -1,5 +1,5 @@
 import {Before, Then} from "@badeball/cypress-cucumber-preprocessor";
-import {convert, render} from "./utils";
+import {convert, render} from "../../../core/utils";
 
 Before(() => {
     cy.resetContext();

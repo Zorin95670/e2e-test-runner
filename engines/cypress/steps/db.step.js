@@ -1,5 +1,5 @@
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-import { render } from "./utils";
+import { render } from "../../../core/utils";
 
 afterEach(() => {
     cy.task('clearDb');

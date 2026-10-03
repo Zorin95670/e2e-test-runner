@@ -1,5 +1,5 @@
 import {Given, Then} from "@badeball/cypress-cucumber-preprocessor";
-import {convert, render} from "./utils";
+import {convert, render} from "../../../core/utils";
 
 Given('I set in localstorage field {string} with {string}', (key, templetedValue) => {
     cy.getContext().then((context) => {

@@ -8,7 +8,8 @@
     "lint": "npx gherkin-lint \"$E2E_SPEC_PATTERN\"",
     "start": "node index.js",
     "start:ui": "node index.js --ui",
-    "test": "node index.js --features=./ --baseUrl=https://www.google.com/"
+    "test": "node index.js --features=./ --baseUrl=https://www.google.com/",
+    "check:steps": "node scripts/check-steps.js"
   },
   "repository": {
     "type": "git",
@@ -39,16 +40,18 @@
     "@badeball/cypress-cucumber-preprocessor": "^26.0.0",
     "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
     "@cypress/browserify-preprocessor": "^3.0.2",
-    "cypress": "^15.20.0",
-    "dotenv": "^17.4.2",
+    "@playwright/test": "^1.63.0",
+    "cypress": "^14.3.3",
+    "dotenv": "^16.5.0",
     "he": "^1.2.0",
     "kafkajs": "^2.2.4",
     "ldapts": "^9.0.0",
     "nunjucks": "^3.2.4",
-    "pg": "^8.22.0",
-    "semantic-release": "^25.0.9"
+    "pg": "^8.16.3",
+    "playwright-bdd": "^9.2.1",
+    "semantic-release": "^24.2.3"
   },
   "cypress-cucumber-preprocessor": {
-    "stepDefinitions": "step_definitions/**/*.step.js"
+    "stepDefinitions": "engines/cypress/steps/**/*.step.js"
   }
 }

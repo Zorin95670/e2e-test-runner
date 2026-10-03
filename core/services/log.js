@@ -1,8 +1,8 @@
-class LogTasks {
+class LogService {
     log(message) {
         console.log(message);
         return null;
     }
 }
 
-module.exports = LogTasks;
+module.exports = LogService;

@@ -1,6 +1,6 @@
 const {Client} = require('ldapts');
 
-class LdapTasks {
+class LdapService {
     constructor() {
         this.client = null;
         this.results = [];
@@ -81,4 +81,4 @@ class LdapTasks {
     }
 }
 
-module.exports = LdapTasks;
+module.exports = LdapService;

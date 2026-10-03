@@ -1,5 +1,5 @@
 import {Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {render} from "./utils";
+import {render} from "../../../core/utils";
 
 Then('I log {string}', (templatedValue) => {
     cy.getContext().then((context) => {

@@ -1,2 +1,4 @@
-cypress/
+/cypress/
 node_modules/
+/playwright/
+/.idea/

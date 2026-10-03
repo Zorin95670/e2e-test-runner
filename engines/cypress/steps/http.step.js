@@ -1,10 +1,9 @@
 import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import nunjucks from "nunjucks";
-import {getDataTable, render} from "./utils";
+import {getDataTable, render} from "../../../core/utils";
 
 When('I request {string} with method {string}', (templatedUrl, method) => {
     cy.getContext().then((context) => {
-        const url = nunjucks.renderString(templatedUrl, context);
+        const url = render(templatedUrl, context);
 
         cy.request({
             method,
@@ -18,7 +17,7 @@ When('I request {string} with method {string}', (templatedUrl, method) => {
 
 When('I request {string} with method {string} with query parameters', (templatedUrl, method, dataTable) => {
     cy.getContext().then((context) => {
-        const url = nunjucks.renderString(templatedUrl, context);
+        const url = render(templatedUrl, context);
         const qs = getDataTable(context, dataTable);
 
         cy.request({
@@ -33,8 +32,8 @@ When('I request {string} with method {string} with query parameters', (templated
 
 When('I request {string} with method {string} with body:', (templatedUrl, method, docString) => {
     cy.getContext().then((context) => {
-        const url = nunjucks.renderString(templatedUrl, context);
-        const body = nunjucks.renderString(docString, context);
+        const url = render(templatedUrl, context);
+        const body = render(docString, context);
 
         cy.request({
             method,
