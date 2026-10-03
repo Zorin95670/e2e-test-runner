@@ -1,7 +1,7 @@
 const {Kafka, logLevel} = require('kafkajs');
 const he = require('he');
 
-class KafkaTasks {
+class KafkaService {
     constructor() {
         this.kafka = null;
         this.producer = null;
@@ -79,4 +79,4 @@ class KafkaTasks {
     }
 }
 
-module.exports = KafkaTasks;
+module.exports = KafkaService;

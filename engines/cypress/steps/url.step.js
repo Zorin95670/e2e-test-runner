@@ -1,5 +1,5 @@
 import {Given, Then} from "@badeball/cypress-cucumber-preprocessor";
-import {render} from "./utils";
+import {render} from "../../../core/utils";
 
 Given('I visit the {string}', (templatedUrl) => {
     cy.getContext().then((context) => {
@@ -37,7 +37,7 @@ Then('I expect the current URL no longer matches {string}', (templatedUrl) => {
     cy.getContext().then((context) => {
         const url = render(templatedUrl, context);
 
-        cy.url({ timeout: 15000 }).should('not.match', url);
+        cy.url({ timeout: 15000 }).should('not.match', new RegExp(url));
     });
 });
 

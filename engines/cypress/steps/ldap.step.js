@@ -1,5 +1,5 @@
 import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {convert, render} from "./utils";
+import {convert, render} from "../../../core/utils";
 
 afterEach(() => {
     cy.task('clearLdap');

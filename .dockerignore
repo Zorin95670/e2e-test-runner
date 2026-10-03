@@ -1,0 +1,9 @@
+.git
+.github
+.idea
+node_modules
+cypress
+playwright
+*.md
+!README.md
+.env

@@ -28,7 +28,10 @@ export function render(template, context) {
 export function getDataTable(context, dataTable) {
     const result = {};
 
-    dataTable.rawTable
+    // Cypress preprocessor exposes `rawTable`, playwright-bdd exposes `raw()`.
+    const rawTable = dataTable.rawTable || dataTable.raw();
+
+    rawTable
         .slice(1)
         .forEach((entry) => {
             const key = render(entry[0], context);

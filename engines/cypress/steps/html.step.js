@@ -1,5 +1,5 @@
 import { Given, Then, When } from '@badeball/cypress-cucumber-preprocessor';
-import { render } from './utils';
+import { render } from '../../../core/utils';
 
 function runWithOrigin(context,  action) {
   if (context.originUrl) {

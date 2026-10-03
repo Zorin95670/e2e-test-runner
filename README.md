@@ -18,21 +18,40 @@ applications. Your `.feature` files stay the same whatever the engine: you choos
 
 ## Execution Engines
 
-| Engine                              | Status         | Notes                          |
-|-------------------------------------|----------------|--------------------------------|
-| [Cypress](https://www.cypress.io/)  | ✅ Available   | Default engine                 |
-| [Playwright](https://playwright.dev/) | 🚧 Planned   |                                |
-| [k6](https://k6.io/)                | 🚧 Planned     | Only a subset of steps will be supported |
+| Engine                                | `--engine`   | Status       | Notes                                    |
+|---------------------------------------|--------------|--------------|------------------------------------------|
+| [Cypress](https://www.cypress.io/)    | `cypress`    | ✅ Available | Default engine                           |
+| [Playwright](https://playwright.dev/) | `playwright` | ✅ Available | Uses [playwright-bdd](https://vitalets.github.io/playwright-bdd/) |
+| [k6](https://k6.io/)                  | `k6`         | 🚧 Planned   | Only a subset of steps will be supported |
 
-> For now **Cypress is the only available engine**, so it is used by default. The engine is selected with the
-> `--engine` option or the `E2E_ENGINE` environment variable (see [Running Tests](#-running-tests)).
+All available engines implement **every step** described in this documentation. The engine is selected with the
+`--engine` option or the `E2E_ENGINE` environment variable (see [Running Tests](#-running-tests)), `cypress` being the
+default.
+
+### Engine specificities
+
+**Cypress**
+
+* HTML selectors are [jQuery selectors](https://api.jquery.com/category/selectors/) (e.g. `:contains()`, `:eq()` are
+  supported).
+* Cross-origin pages need the [origin URL](#-cross-origin-support) to be set.
+
+**Playwright**
+
+* Browsers must be installed once with `npx playwright install` (or `npx playwright install chromium`).
+* HTML selectors are [CSS selectors](https://playwright.dev/docs/other-locators#css-locator): jQuery-only
+  pseudo-classes like `:contains()` or `:eq()` are not supported (use `:has-text()` or `:nth-match()` instead).
+* When a selector matches several elements, assertions are made on the first one, and interactions fail.
+* Cross-origin pages are supported natively: the origin URL steps have no effect.
+* Scenarios run sequentially (one worker), as with Cypress, as they may share external state (database, kafka...).
+* Reports and failure screenshots are generated in the `playwright` folder.
 
 ## Technologies
 
 - [Cucumber](https://cucumber.io/) / Gherkin
 - [Node.js](https://nodejs.org/)
 - [Nunjucks](https://mozilla.github.io/nunjucks/)
-- [Cypress](https://www.cypress.io/) (execution engine)
+- [Cypress](https://www.cypress.io/) and [Playwright](https://playwright.dev/) (execution engines)
 
 ## Installation
 
@@ -77,8 +96,8 @@ as an environment variable (in a `.env` file or injected at runtime):
 | `--features`  | `E2E_FEATURES_PATH`  | ✅       |           | Directory containing your `.feature` files          |
 | `--engine`    | `E2E_ENGINE`         |          | `cypress` | Execution engine (see [Execution Engines](#execution-engines)) |
 | `--ui`        |                      |          |           | Open the engine interactive UI instead of running headless |
-| `--baseUrl`   |                      |          |           | Base URL of the application under test              |
-| `--browser`   |                      |          |           | Browser to use (e.g. `chrome`, `firefox`, `electron`) |
+| `--baseUrl`   | `E2E_BASE_URL`       |          |           | Base URL of the application under test              |
+| `--browser`   |                      |          |           | Browser to use: Cypress (`electron`, `chrome`, `firefox`...), Playwright (`chromium`, `chrome`, `edge`, `firefox`, `webkit`) |
 
 The features path is **relative to the current working directory** (i.e., where `npm run start` is executed).
 For example, in a Java project structure, if the test runner is executed from the `e2e` folder, the correct value
@@ -88,7 +107,14 @@ would typically be:
 E2E_FEATURES_PATH=../src/test/resources/features
 ```
 
-> `CYPRESS_FEATURES_PATH` is still supported as a fallback for backward compatibility.
+Runner options must be written as `--name=value`. Any other argument is passed to the selected engine CLI, for example
+`--spec`, `--env` or `--config` for Cypress, `--grep` or `--retries=2` for Playwright. An option unknown to the engine
+makes the run fail.
+
+```bash
+npm run start -- --features=../features --spec ../features/login.feature
+npm run start -- --engine=playwright --features=../features --grep "Login"
+```
 
 The runner exits with a non-zero code when at least one scenario fails, so it can be used directly in a CI pipeline.
 
@@ -99,7 +125,7 @@ Run the test runner with options:
 ```bash
 npm run start -- --features=../src/test/resources/features
 # Select the engine explicitly
-npm run start -- --engine=cypress --features=../src/test/resources/features
+npm run start -- --engine=playwright --features=../src/test/resources/features
 # With ui
 npm run start:ui -- --features=../src/test/resources/features
 ```
@@ -117,6 +143,9 @@ dotenv -e ../.env -- npm run start:ui
 > A `.env` file located in the current working directory is loaded automatically.
 
 ### 🐳 Run via Docker
+
+> The Docker image embeds the **Cypress** and **Playwright** engines. Select the engine with the `E2E_ENGINE`
+> environment variable (e.g. `--env E2E_ENGINE=playwright`). Only the Playwright `chromium` browser is installed.
 
 To run the test runner in a Docker container, make sure to:
 
@@ -158,6 +187,8 @@ Example:
 
 ```bash
 docker build e2e -t e2e-test-runner
+# Or with other Playwright browsers (chromium, chrome, msedge, firefox, webkit)
+docker build e2e -t e2e-test-runner --build-arg PLAYWRIGHT_BROWSERS="chromium firefox"
 docker run --rm \
   --env-file .env \
   --env TZ=Europe/Paris \
@@ -1510,8 +1541,10 @@ If you need a step that doesn't exist yet, there are two options:
     * A short example of the expected behavior
     * Any relevant context or use case
 
-* 🤝 Contribute directly: If you're comfortable with JavaScript and the targeted engine (currently Cypress), feel free to open a Pull Request. Please:
+* 🤝 Contribute directly: If you're comfortable with JavaScript, feel free to open a Pull Request. Please:
     * Follow the existing step definitions style
+    * Implement the step for every available engine (`engines/<engine>/steps`), shared code goes in `core`
+    * Check that all engines define the same steps with `npm run check:steps`
     * Add Gherkin usage and examples to the README
     * Keep tests modular and consistent
 
