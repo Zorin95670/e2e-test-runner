@@ -57,5 +57,9 @@
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": "engines/cypress/steps/**/*.step.js"
+  },
+  "allowScripts": {
+    "cypress": true,
+    "esbuild": true
   }
 }

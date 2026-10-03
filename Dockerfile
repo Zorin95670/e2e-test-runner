@@ -7,8 +7,9 @@ ENV TZ=Europe/Paris
 # Shared location so Playwright browsers are found whatever the user running the container.
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
-# Timezone and system libraries required by Cypress (https://docs.cypress.io/app/get-started/install-cypress#Linux-Prerequisites).
+# Security updates, timezone and system libraries required by Cypress (https://docs.cypress.io/app/get-started/install-cypress#Linux-Prerequisites).
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y --no-install-recommends \
         tzdata \
         libgtk2.0-0t64 \
@@ -25,10 +26,14 @@ RUN apt-get update && \
     echo $TZ > /etc/timezone && \
     rm -rf /var/lib/apt/lists/*
 
+# npm bundled with the Node image is outdated and brings vulnerabilities.
+RUN npm install -g npm@12.2.0
+
 WORKDIR /app/e2e
 
 COPY package.json package-lock.json ./
-RUN npm ci && \
+# Development dependencies (lint, release) are not needed to run the tests.
+RUN npm ci --omit=dev && \
     npx cypress verify && \
     npx playwright install --with-deps $PLAYWRIGHT_BROWSERS && \
     rm -rf /var/lib/apt/lists/*
