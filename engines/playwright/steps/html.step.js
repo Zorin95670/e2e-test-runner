@@ -37,8 +37,21 @@ const SCROLL_POSITIONS = {
     bottomRight: [1, 1],
 };
 
+// jQuery `:contains()` used with Cypress is translated to its Playwright equivalent `:has-text()`.
 function locate(page, world, templatedSelector) {
-    return page.locator(render(templatedSelector, world));
+    return page.locator(render(templatedSelector, world).replaceAll(':contains(', ':has-text('));
+}
+
+// Unlike a regular click, a forced click does not wait for the element to stop moving:
+// wait for it first, otherwise elements in an opening animation (dialog, menu) can't be clicked.
+async function forceClick(locator) {
+    await locator.scrollIntoViewIfNeeded();
+    await locator.click({ force: true });
+}
+
+// Text of all matched elements, like jQuery `text()` used by Cypress `contain.text`.
+async function getText(locator) {
+    return (await locator.allTextContents()).join('');
 }
 
 async function typeText(locator, text) {
@@ -92,7 +105,7 @@ When('I click on {string}', async ({ page, world }, templatedSelector) => {
 });
 
 When('I force click on {string}', async ({ page, world }, templatedSelector) => {
-    await locate(page, world, templatedSelector).click({ force: true });
+    await forceClick(locate(page, world, templatedSelector));
 });
 
 When('I double click on {string}', async ({ page, world }, templatedSelector) => {
@@ -137,8 +150,8 @@ When('I drag {string} of {int},{int}', async ({ page, world }, templatedSelector
 });
 
 When('I select {string} in {string}', async ({ page, world }, templatedOption, templatedSelector) => {
-    await locate(page, world, templatedSelector).click({ force: true });
-    await locate(page, world, templatedOption).click({ force: true });
+    await forceClick(locate(page, world, templatedSelector));
+    await forceClick(locate(page, world, templatedOption));
     await page.waitForTimeout(500);
 });
 
@@ -223,13 +236,19 @@ Then('I expect the HTML element {string} to have attribute {string} with value {
 Then('I expect the HTML element {string} contains {string}', async ({ page, world }, templatedSelector, templatedValue) => {
     const value = render(templatedValue, world);
 
-    await expect(locate(page, world, templatedSelector).first()).toContainText(value);
+    const locator = locate(page, world, templatedSelector);
+
+    await expect.poll(() => getText(locator)).toContain(value);
 });
 
 Then('I expect the HTML element {string} not contains {string}', async ({ page, world }, templatedSelector, templatedValue) => {
     const value = render(templatedValue, world);
 
-    await expect(locate(page, world, templatedSelector).first()).not.toContainText(value);
+    const locator = locate(page, world, templatedSelector);
+
+    // As with Cypress, the element must exist.
+    await expect(locator.first()).toBeAttached();
+    await expect.poll(() => getText(locator)).not.toContain(value);
 });
 
 Then('I expect the HTML element {string} to have value {string}', async ({ page, world }, templatedSelector, templatedValue) => {

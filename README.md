@@ -39,9 +39,11 @@ default.
 **Playwright**
 
 * Browsers must be installed once with `npx playwright install` (or `npx playwright install chromium`).
-* HTML selectors are [CSS selectors](https://playwright.dev/docs/other-locators#css-locator): jQuery-only
-  pseudo-classes like `:contains()` or `:eq()` are not supported (use `:has-text()` or `:nth-match()` instead).
-* When a selector matches several elements, assertions are made on the first one, and interactions fail.
+* HTML selectors are [CSS selectors](https://playwright.dev/docs/other-locators#css-locator): jQuery `:contains()` is
+  translated to [`:has-text()`](https://playwright.dev/docs/other-locators#css-matching-by-text) (case-insensitive),
+  other jQuery-only pseudo-classes like `:eq()` are not supported (use `:nth-match()` instead).
+* When a selector matches several elements, `contains` / `not contains` assertions check the text of all of them (as
+  with Cypress), other assertions are made on the first one, and interactions fail.
 * Cross-origin pages are supported natively: the origin URL steps have no effect.
 * Scenarios run sequentially (one worker), as with Cypress, as they may share external state (database, kafka...).
 * Reports and failure screenshots are generated in the `playwright` folder.
