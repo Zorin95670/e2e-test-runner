@@ -1532,6 +1532,39 @@ When I execute sql request "<sql>" with values:
 Then I expect <count> database results
 ```
 
+## 🧪 Testing the runner
+
+The `tests` folder contains everything needed to test every step on every engine. It is not included in the Docker
+image.
+
+```
+tests/
+├── api/                 # Simple JSON API used by HTTP steps (port 4281)
+├── front/               # Simple web page used by browser steps (port 4280)
+├── features/            # One feature file per step family, every step is used at least once
+├── docker-compose.yml   # PostgreSQL, Kafka and LDAP services used by the features
+└── run.js               # Starts the front and the API, then runs tests/features with the runner
+```
+
+Run the tests locally:
+
+```bash
+# Start PostgreSQL (55432), Kafka (59092) and LDAP (50389)
+npm run test:services
+
+npm test                            # Cypress engine
+npm test -- --engine=playwright     # Playwright engine
+```
+
+Check the features and the steps:
+
+```bash
+npm run lint:tests    # Lint tests/features
+npm run check:steps   # Every engine defines the same steps, and every step is used in tests/features
+```
+
+The `Pull request` GitHub workflow runs these checks, then the tests for each engine with a matrix.
+
 ## 🚧 Missing a Step?
 
 If you need a step that doesn't exist yet, there are two options:
@@ -1544,7 +1577,8 @@ If you need a step that doesn't exist yet, there are two options:
 * 🤝 Contribute directly: If you're comfortable with JavaScript, feel free to open a Pull Request. Please:
     * Follow the existing step definitions style
     * Implement the step for every available engine (`engines/<engine>/steps`), shared code goes in `core`
-    * Check that all engines define the same steps with `npm run check:steps`
+    * Add a scenario using the step in `tests/features`
+    * Check that all engines define the same steps, and that they are tested, with `npm run check:steps`
     * Add Gherkin usage and examples to the README
     * Keep tests modular and consistent
 

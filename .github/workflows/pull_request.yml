@@ -1,0 +1,272 @@
+name: Pull request
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  delete-comments:
+    name: Delete bot comment(s)
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: izhangzhihao/delete-comment@d075704468e1cf74e60944d9f335351213c34d85
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          delete_user_name: github-actions[bot]
+          issue_number: ${{ github.event.number }}
+
+  branch-naming-rules:
+    name: Check branch name
+    needs: [delete-comments]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: deepakputhraya/action-branch-name@5f1cc199284b75145ec2d13434422e6987cf6af8
+        with:
+          regex: '^(feature|bugfix|improvement|release|hotfix)\/[a-z0-9_.-]+$'
+          allowed_prefixes: "feature,bugfix,improvement,release,hotfix"
+          ignore: main
+          min_length: 5
+          max_length: 50
+
+  commit-checks:
+    name: Check commit messages
+    needs: [delete-comments]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # Installed outside of the project, to not install the project dependencies.
+      - name: Install commitlint
+        run: |
+          npm install --prefix "$RUNNER_TEMP/commitlint" @commitlint/cli @commitlint/config-conventional
+          echo "module.exports = { extends: ['@commitlint/config-conventional'] };" > "$RUNNER_TEMP/commitlint/commitlint.config.cjs"
+
+      - name: Run commitlint
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: |
+          "$RUNNER_TEMP/commitlint/node_modules/.bin/commitlint" \
+            --config "$RUNNER_TEMP/commitlint/commitlint.config.cjs" \
+            --from="origin/$BASE_BRANCH" --to=HEAD --verbose
+
+  check-dependencies:
+    name: Check dependencies
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check outdated dependencies
+        run: |
+          echo '```bash' > dependencies.txt
+          npx --yes npm-check-updates >> dependencies.txt
+          echo '```' >> dependencies.txt
+
+      - name: Comment PR
+        if: github.event.pull_request.head.repo.full_name == github.repository
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        with:
+          header: check-dependencies
+          path: dependencies.txt
+
+  e2e-tests:
+    name: E2E tests (${{ matrix.engine }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        engine:
+          - cypress
+          - playwright
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+      kafka:
+        image: apache/kafka:3.9.1
+        env:
+          KAFKA_NODE_ID: 1
+          KAFKA_PROCESS_ROLES: broker,controller
+          KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:59092
+          KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+          KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+          KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+        ports:
+          - 59092:9092
+        options: >-
+          --health-cmd "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092"
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 10
+
+      ldap:
+        image: osixia/openldap:1.5.0
+        ports:
+          - 50389:389
+        options: >-
+          --health-cmd "ldapsearch -x -H ldap://localhost -b dc=example,dc=org -D cn=admin,dc=example,dc=org -w admin"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        if: matrix.engine == 'playwright'
+        run: npx playwright install --with-deps chromium
+
+      - name: Run e2e tests
+        env:
+          ENGINE: ${{ matrix.engine }}
+        run: |
+          set -o pipefail
+          npm test -- --engine="$ENGINE" 2>&1 | tee e2e.log
+
+      - name: Build tests summary
+        if: success() || failure()
+        env:
+          ENGINE: ${{ matrix.engine }}
+          RESULT: ${{ job.status }}
+        run: |
+          {
+            echo "### E2E tests - $ENGINE: $RESULT"
+            echo '```'
+            if [[ "$ENGINE" == "cypress" ]]; then
+              sed 's/\x1b\[[0-9;]*m//g' e2e.log | sed -n '/(Run Finished)/,$p'
+            else
+              sed 's/\x1b\[[0-9;]*m//g' e2e.log | grep -E '✓|✘|-  [0-9]|passed|failed|flaky|skipped|did not run'
+            fi
+            echo '```'
+          } > e2e-summary.md
+
+      - name: Comment PR
+        if: (success() || failure()) && github.event.pull_request.head.repo.full_name == github.repository
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        with:
+          header: e2e-tests-${{ matrix.engine }}
+          path: e2e-summary.md
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: ${{ matrix.engine }}-results
+          path: |
+            cypress/screenshots
+            playwright/test-results
+          if-no-files-found: ignore
+
+  security-malware-scan:
+    name: Security - Malware Scan
+    needs: [delete-comments]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: gensecaihq/Shai-Hulud-2.0-Detector@2755f94762bf5012bc7be82c93e172eabbcd0802 # v2.2.0
+        with:
+          fail-on-critical: true
+
+  security-sast:
+    name: Security - SAST
+    needs: [delete-comments]
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        with:
+          languages: javascript
+          build-mode: none
+      - uses: github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+
+  security-github-actions:
+    name: Security - GitHub Actions
+    needs: [delete-comments]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: zizmorcore/zizmor-action@3dc1ecc9bcb9e94e9b2c709687979e1298497054 # v0.6.2
+
+  security-container:
+    name: Security - Container
+    needs: [delete-comments]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Build Docker image
+        run: docker build -t e2e-test-runner:pr .
+
+      - uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: e2e-test-runner:pr
+          severity: CRITICAL,HIGH
+          exit-code: "1"

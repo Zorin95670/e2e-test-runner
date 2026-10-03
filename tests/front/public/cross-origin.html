@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>e2e-test-runner cross origin page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1 id="title">Cross origin page</h1>
+<input id="cross-origin-input" type="text">
+<button id="cross-origin-button" type="button" onclick="document.getElementById('cross-origin-result').textContent = 'clicked on cross origin'">Click</button>
+<div id="cross-origin-result"></div>
+<a id="home-link" href="#">Back to home</a>
+<script>
+    // Back to the main origin, served on localhost.
+    document.getElementById('home-link').href = `${window.location.protocol}//localhost:${window.location.port}/page.html`;
+</script>
+</body>
+</html>
