@@ -14,7 +14,7 @@ const absolutePath = path.resolve(process.env.E2E_FEATURES_PATH);
 
 module.exports = defineConfig({
     e2e: {
-        env: process.env,
+        expose: process.env,
         specPattern: `${absolutePath}/**/*.feature`,
         supportFile: 'engines/cypress/support/e2e.js',
         reporter: require.resolve('@badeball/cypress-cucumber-preprocessor/pretty-reporter'),
