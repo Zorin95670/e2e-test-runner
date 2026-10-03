@@ -269,4 +269,9 @@ jobs:
         with:
           image-ref: e2e-test-runner:pr
           severity: CRITICAL,HIGH
+          # Only fail on vulnerabilities that can be fixed.
+          ignore-unfixed: true
+          # Dependencies embedded in the Cypress binary can only be fixed by a new Cypress release.
+          skip-dirs: /root/.cache/Cypress
+          trivyignores: .trivyignore
           exit-code: "1"

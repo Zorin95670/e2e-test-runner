@@ -1,0 +1,5 @@
+# Vulnerabilities in dependencies bundled with npm 12.2.0 (latest version, no fix released yet).
+# They expire so the scan fails again and npm is updated once a fixed version is released.
+CVE-2026-102276 exp:2027-01-01
+CVE-2026-102278 exp:2027-01-01
+CVE-2026-19534 exp:2027-01-01
