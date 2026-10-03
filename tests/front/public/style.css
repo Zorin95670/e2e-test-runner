@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+section {
+    margin: 8px;
+}
+
+#hidden-element {
+    display: none;
+}
+
+#container {
+    position: relative;
+    width: 300px;
+    height: 120px;
+}
+
+#box {
+    position: absolute;
+    left: 20px;
+    top: 10px;
+    width: 100px;
+    height: 50px;
+    padding: 5px;
+    border: 2px solid black;
+}
+
+#scroll-container {
+    width: 200px;
+    height: 100px;
+    overflow: auto;
+}
+
+#scroll-content {
+    height: 1000px;
+}
+
+#select-options {
+    display: none;
+}
+
+#select-options.open {
+    display: block;
+}
+
+#draggable,
+#movable {
+    width: 100px;
+    height: 50px;
+    border: 1px solid black;
+}
+
+#drop-zone {
+    min-height: 80px;
+    border: 1px dashed black;
+}
+
+#movable {
+    position: relative;
+    user-select: none;
+}
+
+/* Clickable elements keep a size even when no font is available to render their text. */
+a,
+button {
+    display: inline-block;
+    min-width: 80px;
+    min-height: 20px;
+}

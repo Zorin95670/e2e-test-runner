@@ -1,4 +1,5 @@
 const { expect } = require('@playwright/test');
+const { isDeepStrictEqual } = require('util');
 const { Given, Then, When } = require('../fixtures');
 const { convert, render } = require('../../../core/utils');
 
@@ -56,7 +57,7 @@ Then('I expect a message on Kafka topic {string} equals to {string} as {string}'
             return msg === message;
         }
 
-        return JSON.stringify(JSON.parse(msg)) === JSON.stringify(message);
+        return isDeepStrictEqual(JSON.parse(msg), message);
     });
 
     expect(found).toBe(true);

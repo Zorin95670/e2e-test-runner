@@ -89,7 +89,7 @@ Then('I expect a message on Kafka topic {string} equals to {string} as {string}'
                 return msg === message;
             }
 
-            return JSON.stringify(JSON.parse(msg)) === JSON.stringify(message);
+            return Cypress._.isEqual(JSON.parse(msg), message);
         });
 
 

@@ -58,6 +58,9 @@ async function typeText(locator, text) {
 }
 
 async function dragBy(page, locator, x, y) {
+    // Mouse coordinates are relative to the viewport: the element must be visible on screen.
+    await locator.scrollIntoViewIfNeeded();
+
     const box = await locator.boundingBox();
     const startX = box.x + box.width / 2;
     const startY = box.y + box.height / 2;

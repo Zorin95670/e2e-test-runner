@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>e2e-test-runner front</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1 id="title">E2E test runner</h1>
+
+<section id="navigation">
+    <a id="page-link" href="/page.html?id=42">Go to page</a>
+    <a id="cross-origin-link" href="#">Go to cross origin page</a>
+</section>
+
+<section id="clicks">
+    <button id="click-button" type="button">Click</button>
+    <button id="force-click-button" type="button">Force click</button>
+    <button id="double-click-button" type="button">Double click</button>
+    <div id="click-result"></div>
+</section>
+
+<section id="states">
+    <div id="visible-element">Visible</div>
+    <div id="hidden-element">Hidden</div>
+    <button id="disabled-button" type="button" disabled>Disabled</button>
+    <button id="enabled-button" type="button">Enabled</button>
+    <input id="checked-checkbox" type="checkbox" checked>
+    <input id="unchecked-checkbox" type="checkbox">
+    <div id="attribute-element" data-role="tester" title="Attribute title">Attribute</div>
+    <ul id="items">
+        <li class="item">First item</li>
+        <li class="item">Second item</li>
+        <li class="item">Third item</li>
+    </ul>
+</section>
+
+<section id="geometry">
+    <div id="container">
+        <div id="box"></div>
+    </div>
+    <div id="viewport-size"></div>
+</section>
+
+<section id="texts">
+    <input id="text-input" type="text" value="Initial value">
+    <div id="text-result"></div>
+</section>
+
+<section id="scroll">
+    <div id="scroll-container">
+        <div id="scroll-content">Scroll content</div>
+    </div>
+    <div id="scroll-result"></div>
+</section>
+
+<section id="select">
+    <button id="select-button" type="button">Choose a fruit</button>
+    <ul id="select-options">
+        <li id="option-apple" class="option">Apple</li>
+        <li id="option-banana" class="option">Banana</li>
+    </ul>
+    <div id="select-result"></div>
+</section>
+
+<section id="drag">
+    <div id="draggable" draggable="true">Drag me</div>
+    <div id="drop-zone">Drop zone</div>
+    <div id="drop-result"></div>
+    <div id="movable">Move me</div>
+    <div id="move-result"></div>
+</section>
+
+<section id="files">
+    <input id="file-input" type="file" multiple>
+    <div id="file-result"></div>
+</section>
+
+<section id="storage">
+    <button id="read-storage-button" type="button">Read token</button>
+    <div id="storage-result"></div>
+</section>
+
+<script src="app.js"></script>
+</body>
+</html>

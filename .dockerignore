@@ -7,3 +7,4 @@ playwright
 *.md
 !README.md
 .env
+tests

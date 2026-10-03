@@ -8,8 +8,10 @@
     "lint": "npx gherkin-lint \"$E2E_SPEC_PATTERN\"",
     "start": "node index.js",
     "start:ui": "node index.js --ui",
-    "test": "node index.js --features=./ --baseUrl=https://www.google.com/",
-    "check:steps": "node scripts/check-steps.js"
+    "test": "node tests/run.js",
+    "check:steps": "node scripts/check-steps.js",
+    "test:services": "docker compose -f tests/docker-compose.yml up -d",
+    "lint:tests": "gherkin-lint tests/features"
   },
   "repository": {
     "type": "git",
@@ -33,12 +35,14 @@
     "node": ">=22.0.0"
   },
   "devDependencies": {
+    "@cucumber/cucumber-expressions": "^18.1.0",
     "gherkin-lint": "^4.2.4",
     "standard-version": "^9.5.0"
   },
   "dependencies": {
-    "@badeball/cypress-cucumber-preprocessor": "^26.0.0",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
+    "@4tw/cypress-drag-drop": "^2.3.1",
+    "@badeball/cypress-cucumber-preprocessor": "^22.0.1",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.5",
     "@cypress/browserify-preprocessor": "^3.0.2",
     "@playwright/test": "^1.63.0",
     "cypress": "^14.3.3",
