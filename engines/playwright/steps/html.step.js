@@ -37,9 +37,17 @@ const SCROLL_POSITIONS = {
     bottomRight: [1, 1],
 };
 
-// jQuery `:contains()` used with Cypress is translated to its Playwright equivalent `:has-text()`.
+// jQuery selectors used with Cypress are translated to their Playwright equivalents:
+// `:contains()` to `:has-text()`, and `A:eq(n) B` to `A >> nth=n >> B` (n-th element of all matched elements).
+function toPlaywrightSelector(selector) {
+    return selector
+        .replaceAll(':contains(', ':has-text(')
+        .replace(/:eq\((-?\d+)\)\s*(>?)\s*/g, (_, index, child) => ` >> nth=${index} >> ${child ? ':scope > ' : ''}`)
+        .replace(/ >> $/, '');
+}
+
 function locate(page, world, templatedSelector) {
-    return page.locator(render(templatedSelector, world).replaceAll(':contains(', ':has-text('));
+    return page.locator(toPlaywrightSelector(render(templatedSelector, world)));
 }
 
 // Unlike a regular click, a forced click does not wait for the element to stop moving and to be on screen:
