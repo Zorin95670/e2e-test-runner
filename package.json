@@ -52,11 +52,13 @@
     "ldapts": "^9.2.0",
     "nunjucks": "^3.2.4",
     "pg": "^8.23.1",
-    "playwright-bdd": "^9.2.1",
-    "semantic-release": "^25.0.9"
+    "playwright-bdd": "^9.2.1"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": "engines/cypress/steps/**/*.step.js"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.3"
   },
   "allowScripts": {
     "cypress": true,
