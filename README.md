@@ -1,24 +1,38 @@
 # e2e-test-runner
 
-**e2e-test-runner** is a ready-to-use E2E test runner that leverages Cypress and Cucumber.
+**e2e-test-runner** is a ready-to-use E2E test runner that executes Gherkin (Cucumber) scenarios on a pluggable
+**execution engine**.
 
 It provides a collection of pre-implemented reusable steps to simplify writing and maintaining end-to-end tests for your
-applications.
+applications. Your `.feature` files stay the same whatever the engine: you choose the engine when launching the runner.
 
 ## Features
 
 - 🧪 Predefined Cucumber steps for HTTP requests and assertions
+- 🖱️ Predefined steps for browser interactions and assertions (HTML elements, URL, localStorage)
 - 🧰 Built-in context system with template rendering (via Nunjucks)
 - 📦 PostgreSQL database testing with parameterized query support
-- ⚙️ Compatible with Cypress and Cucumber ecosystem
+- ☕ Kafka and 🔡 LDAP steps
+- 🔌 Engine-agnostic entry point: select the execution engine at launch
 - 🚀 Run tests via Node or Docker
+
+## Execution Engines
+
+| Engine                              | Status         | Notes                          |
+|-------------------------------------|----------------|--------------------------------|
+| [Cypress](https://www.cypress.io/)  | ✅ Available   | Default engine                 |
+| [Playwright](https://playwright.dev/) | 🚧 Planned   |                                |
+| [k6](https://k6.io/)                | 🚧 Planned     | Only a subset of steps will be supported |
+
+> For now **Cypress is the only available engine**, so it is used by default. The engine is selected with the
+> `--engine` option or the `E2E_ENGINE` environment variable (see [Running Tests](#-running-tests)).
 
 ## Technologies
 
-- [Cypress](https://www.cypress.io/)
-- [Cucumber](https://cucumber.io/)
+- [Cucumber](https://cucumber.io/) / Gherkin
 - [Node.js](https://nodejs.org/)
 - [Nunjucks](https://mozilla.github.io/nunjucks/)
+- [Cypress](https://www.cypress.io/) (execution engine)
 
 ## Installation
 
@@ -53,70 +67,64 @@ npm install
 
 ## 🚀 Running Tests
 
-### 🔧 Required Environment Variable
+### 🔧 Configuration
 
-The test runner **requires** the environment variable `CYPRESS_FEATURES_PATH`.
+The runner entry point is `index.js` (used by `npm run start`). Each setting can be given as a command-line option or
+as an environment variable (in a `.env` file or injected at runtime):
 
-* It must point to the directory containing your `.feature` files.
-* The path should be **relative to the current working directory** (i.e., where `npm run start` is executed).
-* For example, in a Java project structure, if the test runner is executed from the `e2e` folder, the correct value
-  would typically be:
+| Option        | Environment variable | Required | Default   | Description                                         |
+|---------------|----------------------|----------|-----------|-----------------------------------------------------|
+| `--features`  | `E2E_FEATURES_PATH`  | ✅       |           | Directory containing your `.feature` files          |
+| `--engine`    | `E2E_ENGINE`         |          | `cypress` | Execution engine (see [Execution Engines](#execution-engines)) |
+| `--ui`        |                      |          |           | Open the engine interactive UI instead of running headless |
+| `--baseUrl`   |                      |          |           | Base URL of the application under test              |
+| `--browser`   |                      |          |           | Browser to use (e.g. `chrome`, `firefox`, `electron`) |
 
-```env
-CYPRESS_FEATURES_PATH=../src/test/resources/features
-```
-
-You must define this variable in a `.env` file or inject it at runtime.
-
-### 🔒 Optional Environment Variable: `CYPRESS_CHROME_SECURITY_ENABLED`
-
-By default, Cypress enforces Chrome's web security features (CORS, mixed content, certificate validation). This can cause unexpected page reloads or blocked navigation when testing against apps served with **self-signed or untrusted SSL certificates**.
-
-You can disable Chrome's security checks by setting:
+The features path is **relative to the current working directory** (i.e., where `npm run start` is executed).
+For example, in a Java project structure, if the test runner is executed from the `e2e` folder, the correct value
+would typically be:
 
 ```env
-CYPRESS_CHROME_SECURITY_ENABLED=false
+E2E_FEATURES_PATH=../src/test/resources/features
 ```
 
-* When set to `false`:
-  * `chromeWebSecurity` is disabled in the Cypress config.
-  * The `--ignore-certificate-errors` and `--allow-insecure-localhost` flags are passed to Chrome at launch.
-* When unset or set to `true` (default), Cypress behaves normally with full security checks enabled.
+> `CYPRESS_FEATURES_PATH` is still supported as a fallback for backward compatibility.
 
-> ⚠️ Only disable this for local/dev/test environments with self-signed certificates. Avoid disabling it when testing against production-like environments.
+The runner exits with a non-zero code when at least one scenario fails, so it can be used directly in a CI pipeline.
 
-**Example:**
+### 📦 Local Execution
 
-```env
-CYPRESS_FEATURES_PATH=../src/test/resources/features
-CYPRESS_CHROME_SECURITY_ENABLED=false
+Run the test runner with options:
+
+```bash
+npm run start -- --features=../src/test/resources/features
+# Select the engine explicitly
+npm run start -- --engine=cypress --features=../src/test/resources/features
+# With ui
+npm run start:ui -- --features=../src/test/resources/features
 ```
 
-### 📦 Local Execution (with `dotenv`)
-
-To run the test runner locally and load environment variables from a `.env` file:
-
-1. Install [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli) globally:
+Or load the configuration from a `.env` file with [`dotenv-cli`](https://www.npmjs.com/package/dotenv-cli):
 
 ```bash
 npm install -g dotenv-cli
-```
 
-2. Run the test runner:
-
-```bash
 dotenv -e ../.env -- npm run start
 # With ui
 dotenv -e ../.env -- npm run start:ui
 ```
 
+> A `.env` file located in the current working directory is loaded automatically.
+
 ### 🐳 Run via Docker
 
 To run the test runner in a Docker container, make sure to:
 
-* Provide access to the `.env` file.
+* Provide access to the `.env` file (with `E2E_FEATURES_PATH` and, optionally, `E2E_ENGINE`).
 * Set the timezone (e.g., `Europe/Paris`) using the `TZ` environment variable.
 * Connect the container to the appropriate Docker network (e.g., to communicate with your application under test).
+
+> The image working directory is `/app/e2e`: with the volume below, set `E2E_FEATURES_PATH=../src/test/resources/features`.
 
 Example:
 
@@ -126,13 +134,13 @@ docker run --rm \
   --env TZ=Europe/Paris \
   --network my-app-network \
   -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features \
-  vincentmoittie:e2e-test-runner:latest
+  vincentmoittie/e2e-test-runner:latest
 ```
 
 Or one-line version:
 
 ```bash
-docker run --rm --env-file .env --env TZ=Europe/Paris --network my-app-network  -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features vincentmoittie:e2e-test-runner:latest
+docker run --rm --env-file .env --env TZ=Europe/Paris --network my-app-network  -v "$(pwd)/src/test/resources/features":/app/src/test/resources/features vincentmoittie/e2e-test-runner:latest
 ```
 
 > Replace `my-app-network` with the name of the Docker network your application is running on.
@@ -142,7 +150,7 @@ docker run --rm --env-file .env --env TZ=Europe/Paris --network my-app-network  
 To run the test runner in a Docker container, make sure to:
 
 * Mount the project directory.
-* Provide access to the `.env` file.
+* Provide access to the `.env` file (with `E2E_FEATURES_PATH` and, optionally, `E2E_ENGINE`).
 * Set the timezone (e.g., `Europe/Paris`) using the `TZ` environment variable.
 * Connect the container to the appropriate Docker network (e.g., to communicate with your application under test).
 
@@ -670,9 +678,11 @@ Then I expect the current URL no longer matches ".*\\/splash$"
 
 ### 🌍 Cross-Origin Support
 
-When testing applications that involve **cross-domain navigation** (e.g., your app redirects to a third-party login page or an external service), Cypress blocks interactions with elements on a different origin by default due to its same-origin policy.
+When testing applications that involve **cross-domain navigation** (e.g., your app redirects to a third-party login page or an external service), some engines block interactions with elements on a different origin by default.
 
-To handle this, you can set an **origin URL** in the context. When set, all HTML element interactions and assertions will automatically be wrapped in a `cy.origin()` call, allowing Cypress to operate on elements from that cross-domain origin.
+To handle this, you can set an **origin URL** in the context. When set, all HTML element interactions and assertions are executed on that cross-domain origin.
+
+> **Cypress:** steps are automatically wrapped in a `cy.origin()` call, as Cypress enforces a same-origin policy.
 
 This is **entirely optional** — if no origin URL is set, steps behave as usual.
 
@@ -1500,7 +1510,7 @@ If you need a step that doesn't exist yet, there are two options:
     * A short example of the expected behavior
     * Any relevant context or use case
 
-* 🤝 Contribute directly: If you're comfortable with JavaScript and Cypress, feel free to open a Pull Request. Please:
+* 🤝 Contribute directly: If you're comfortable with JavaScript and the targeted engine (currently Cypress), feel free to open a Pull Request. Please:
     * Follow the existing step definitions style
     * Add Gherkin usage and examples to the README
     * Keep tests modular and consistent

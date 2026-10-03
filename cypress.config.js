@@ -10,12 +10,10 @@ const setupTasks = require('./tasks');
 
 dotenv.config();
 
-const absolutePath = path.resolve(process.env.CYPRESS_FEATURES_PATH);
-const chromeSecurityEnabled = process.env.CYPRESS_CHROME_SECURITY_ENABLED !== 'false';
+const absolutePath = path.resolve(process.env.E2E_FEATURES_PATH || process.env.CYPRESS_FEATURES_PATH);
 
 module.exports = defineConfig({
     e2e: {
-        chromeWebSecurity: chromeSecurityEnabled,
         env: process.env,
         specPattern: `${absolutePath}/**/*.feature`,
         supportFile: 'support/e2e.js',
