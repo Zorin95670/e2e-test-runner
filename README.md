@@ -10,6 +10,7 @@ applications. Your `.feature` files stay the same whatever the engine: you choos
 
 - 🧪 Predefined Cucumber steps for HTTP requests and assertions
 - 🖱️ Predefined steps for browser interactions and assertions (HTML elements, URL, localStorage)
+- ♿ RGAA accessibility analysis steps
 - 🧰 Built-in context system with template rendering (via Nunjucks)
 - 📦 PostgreSQL database testing with parameterized query support
 - ☕ Kafka and 🔡 LDAP steps
@@ -1021,6 +1022,54 @@ Given I set the viewport size to 1280 px by 720 px
 
 ---
 
+### ♿ RGAA Accessibility
+
+**Important notes:**
+- The analysis uses [axe-core](https://github.com/dequelabs/axe-core), limited to the rules mapped to RGAA 4 criteria
+- A violation is a failed rule, with its impact: `minor`, `moderate`, `serious` or `critical`
+- All violations are stored in `ctx.rgaa` for assertions
+
+1. Run an RGAA analysis on the current page
+
+```gherkin
+When I run an RGAA accessibility analysis on the current page
+
+# Example:
+When I run an RGAA accessibility analysis on the current page
+Then I log "{{ ctx.rgaa | json }}"
+```
+
+2. Assert the page has no violations
+
+```gherkin
+Then I expect the page to have no accessibility violations
+
+# Example:
+Then I expect the page to have no accessibility violations
+```
+
+3. Assert the page has no violations above an impact
+
+Available impacts, from lowest to highest: `minor`, `moderate`, `serious`, `critical`.
+
+```gherkin
+Then I expect the page to have no accessibility violations above "<impact>"
+
+# Example:
+Then I expect the page to have no accessibility violations above "moderate"
+```
+
+4. Assert the page has at most a number of violations
+
+```gherkin
+Then I expect the page to have at most <number> accessibility violations
+
+# Example:
+Then I expect the page to have at most 3 accessibility violations
+```
+
+---
+
 ### ☕ Kafka Messaging Steps
 
 1. Setup Kafka client with clientId and broker
@@ -1493,6 +1542,12 @@ Then I set the text "<text>" in the HTML element "<selector>"
 
 # 📐 Viewport Configuration
 Given I set the viewport size to <width> px by <height> px
+
+# ♿ RGAA Accessibility
+When I run an RGAA accessibility analysis on the current page
+Then I expect the page to have no accessibility violations
+Then I expect the page to have no accessibility violations above "<impact>"
+Then I expect the page to have at most <number> accessibility violations
 
 # ☕ Kafka Messaging Steps
 Given I setup kafka with clientId "<clientId>" and broker "<broker>"
