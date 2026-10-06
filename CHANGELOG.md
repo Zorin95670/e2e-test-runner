@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/Zorin95670/cypress-test-runner/compare/v2.0.0...v2.1.0) (2026-10-06)
+
+
+### Features
+
+* add RGAA accessibility analysis steps ([9e04f87](https://github.com/Zorin95670/cypress-test-runner/commit/9e04f87aedd013a23539b16e75e293e251ba6956))
+
 ## [2.0.0](https://github.com/Zorin95670/cypress-test-runner/compare/v1.13.0...v2.0.0) (2026-10-03)
 
 
