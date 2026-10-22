@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 
 const USERS = [
     { id: 1, name: 'John', age: 30, admin: true },
@@ -88,10 +89,41 @@ function start(port) {
     });
 }
 
+// HTTPS server requesting a client certificate: it answers 401 to the requests without a certificate signed by `ca`.
+// `/redirect` redirects to `/certificate`, or to the URL of its `to` query parameter. Any other path echoes the
+// subject of the certificate, the method, the query and the body of the request.
+function startMutualTls(port, {key, cert, ca}) {
+    return new Promise((resolve) => {
+        const server = https.createServer({key, cert, ca, requestCert: true, rejectUnauthorized: false}, async (req, res) => {
+            const url = new URL(req.url, 'https://localhost');
+            const body = await readBody(req);
+
+            if (!req.socket.authorized) {
+                return send(res, 401, {authorized: false});
+            }
+
+            if (url.pathname === '/redirect') {
+                res.writeHead(302, {location: url.searchParams.get('to') || '/certificate'});
+
+                return res.end();
+            }
+
+            return send(res, 200, {
+                subject: req.socket.getPeerCertificate().subject.CN,
+                method: req.method,
+                query: Object.fromEntries(url.searchParams),
+                body,
+            });
+        });
+
+        server.listen(port, () => resolve(server));
+    });
+}
+
 if (require.main === module) {
     const port = Number(process.env.API_PORT || 4281);
 
     start(port).then(() => console.log(`API listening on http://localhost:${port}`));
 }
 
-module.exports = { start };
+module.exports = { start, startMutualTls };

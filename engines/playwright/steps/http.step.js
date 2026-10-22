@@ -1,31 +1,37 @@
 const { expect } = require('@playwright/test');
 const { Given, Then, When } = require('../fixtures');
-const { getDataTable, render } = require('../../../core/utils');
+const HttpService = require('../../../core/services/http');
+const { getClientCertificate, getDataTable, render } = require('../../../core/utils');
+
+const http = new HttpService();
 
 // Same shape as the Cypress `cy.request` response: JSON bodies are parsed.
 async function toResponse(response) {
     const headers = response.headers();
-    const text = await response.text();
-    let body = text;
-
-    if ((headers['content-type'] || '').includes('json')) {
-        try {
-            body = JSON.parse(text);
-        } catch (e) {
-            body = text;
-        }
-    }
 
     return {
         status: response.status(),
         statusText: response.statusText(),
         headers,
-        body,
+        body: HttpService.parseBody(headers['content-type'], await response.text()),
     };
 }
 
-// `page.request` shares cookies with the browser, like `cy.request`.
+// `page.request` shares cookies with the browser, like `cy.request`. A request to an origin with a client certificate
+// is sent by the HttpService, like with the Cypress task.
 async function request(page, world, url, options) {
+    const certificate = getClientCertificate(world, url);
+
+    if (certificate) {
+        const { data: body, ...rest } = options;
+
+        world.response = await http.requestWithClientCertificate({
+            ...rest, url, body, headers: { ...world.httpHeaders }, certificate,
+        });
+
+        return;
+    }
+
     const response = await page.request.fetch(url, {
         headers: { ...world.httpHeaders },
         failOnStatusCode: false,
@@ -57,6 +63,13 @@ Then('I expect status code is {int}', async ({ world }, expected) => {
 
 Given('I set http header {string} with {string}', async ({ world }, key, templatedValue) => {
     world.httpHeaders[key] = render(templatedValue, world);
+});
+
+Given('I set client certificate {string} and key {string} for {string}', async ({ world }, templatedCert, templatedKey, templatedUrl) => {
+    world.clientCertificates[new URL(render(templatedUrl, world)).origin] = {
+        cert: render(templatedCert, world),
+        key: render(templatedKey, world),
+    };
 });
 
 Then('I expect http header {string} is {string}', async ({ world }, headerName, templatedExpected) => {

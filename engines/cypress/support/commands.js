@@ -2,6 +2,7 @@ let context = {
     env: Cypress.expose(),
     ctx: {},
     httpHeaders: {},
+    clientCertificates: {},
     originUrl: null,
 };
 
@@ -16,6 +17,7 @@ Cypress.Commands.add('resetContext', () => {
         env: Cypress.expose(),
         ctx: {},
         httpHeaders: {},
+        clientCertificates: {},
         originUrl: null,
     };
 });
