@@ -1,16 +1,25 @@
 import {Given, Then, When} from "@badeball/cypress-cucumber-preprocessor";
-import {getDataTable, render} from "../../../core/utils";
+import {getClientCertificate, getDataTable, render} from "../../../core/utils";
+
+// Sends the request with `cy.request`, or with a task when a client certificate is set for its origin.
+function request(context, options) {
+    const headers = {...context.httpHeaders};
+    const certificate = getClientCertificate(context, options.url);
+
+    if (certificate) {
+        const {qs: params, ...rest} = options;
+
+        return cy.task('requestWithClientCertificate', {...rest, params, headers, certificate});
+    }
+
+    return cy.request({...options, headers, failOnStatusCode: false});
+}
 
 When('I request {string} with method {string}', (templatedUrl, method) => {
     cy.getContext().then((context) => {
         const url = render(templatedUrl, context);
 
-        cy.request({
-            method,
-            url,
-            headers: {...context.httpHeaders},
-            failOnStatusCode: false
-        })
+        request(context, {method, url})
             .then((response) => cy.setContext({response}));
     });
 });
@@ -20,13 +29,7 @@ When('I request {string} with method {string} with query parameters', (templated
         const url = render(templatedUrl, context);
         const qs = getDataTable(context, dataTable);
 
-        cy.request({
-            method,
-            url,
-            qs,
-            headers: {...context.httpHeaders},
-            failOnStatusCode: false
-        }).then((response) => cy.setContext({response}));
+        request(context, {method, url, qs}).then((response) => cy.setContext({response}));
     });
 });
 
@@ -35,13 +38,7 @@ When('I request {string} with method {string} with body:', (templatedUrl, method
         const url = render(templatedUrl, context);
         const body = render(docString, context);
 
-        cy.request({
-            method,
-            url,
-            body,
-            headers: {...context.httpHeaders},
-            failOnStatusCode: false
-        }).then((response) => cy.setContext({response}));
+        request(context, {method, url, body}).then((response) => cy.setContext({response}));
     });
 });
 
@@ -59,6 +56,15 @@ Given('I set http header {string} with {string}', (key, templatedValue) => {
         httpHeaders[key] = value;
 
         return cy.setContext({httpHeaders});
+    });
+})
+
+Given('I set client certificate {string} and key {string} for {string}', (templatedCert, templatedKey, templatedUrl) => {
+    cy.getContext().then((context) => {
+        const {origin} = new URL(render(templatedUrl, context));
+        const certificate = {cert: render(templatedCert, context), key: render(templatedKey, context)};
+
+        return cy.setContext({clientCertificates: {...context.clientCertificates, [origin]: certificate}});
     });
 })
 

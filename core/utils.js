@@ -43,3 +43,9 @@ export function getDataTable(context, dataTable) {
 
     return result;
 }
+
+// Client certificate set for the origin of the URL, if any. A relative URL, resolved later against the base URL,
+// never has one.
+export function getClientCertificate(context, url) {
+    return URL.canParse(url) ? context.clientCertificates[new URL(url).origin] : undefined;
+}

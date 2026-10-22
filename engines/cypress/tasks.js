@@ -2,6 +2,7 @@ const LogService = require('../../core/services/log');
 const KafkaService = require('../../core/services/kafka');
 const LdapService = require('../../core/services/ldap');
 const DbService = require('../../core/services/db');
+const HttpService = require('../../core/services/http');
 
 function registerInstance(instance) {
     const tasks = {};
@@ -19,5 +20,6 @@ module.exports = function setupTasks(on) {
         ...registerInstance(new KafkaService()),
         ...registerInstance(new LdapService()),
         ...registerInstance(new DbService()),
+        ...registerInstance(new HttpService()),
     });
 };

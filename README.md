@@ -463,6 +463,20 @@ Given I set http header "<key>" with "<value>"
 Given I set http header "Authorization" with "Bearer abc123"
 ```
 
+5. Set a client certificate
+
+The requests to the origin of the URL present the PEM client certificate and its private key, for the servers
+requiring a mutual TLS authentication. Setting another certificate for the same origin replaces it. The runner sends
+these requests outside of the browser: they do not share its cookies. Redirects are followed, and the certificate is
+presented again only to the redirects on the same origin.
+
+```gherkin
+Given I set client certificate "<certificatePath>" and key "<keyPath>" for "<url>"
+
+# Example:
+Given I set client certificate "{{ env.CLIENT_CERTIFICATE }}" and key "{{ env.CLIENT_KEY }}" for "https://api.example.com"
+```
+
 ---
 
 ### 📥 Response Assertions
@@ -1455,6 +1469,7 @@ Then I store the text of the HTML element "<selector>" as "<key>" in context
 
 # 🌐 HTTP Requests
 Given I set http header "<key>" with "<value>"
+Given I set client certificate "<certificatePath>" and key "<keyPath>" for "<url>"
 When I request "<url>" with method "<method>"
 When I request "<url>" with method "<method>" with query parameters
 | key     | value      | type    |

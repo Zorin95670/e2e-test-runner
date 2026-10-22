@@ -10,6 +10,7 @@ const test = base.extend({
             env: { ...process.env },
             ctx: {},
             httpHeaders: {},
+            clientCertificates: {},
             originUrl: null,
         });
     },
