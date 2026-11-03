@@ -36,6 +36,10 @@ byId('scroll-container').addEventListener('scroll', (event) => {
     }
 });
 
+byId('native-select').addEventListener('change', (event) => {
+    byId('native-select-result').textContent = `changed: ${event.target.value}`;
+});
+
 byId('select-button').addEventListener('click', () => {
     byId('select-options').classList.add('open');
 });

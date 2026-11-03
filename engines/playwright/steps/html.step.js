@@ -167,6 +167,15 @@ When('I select {string} in {string}', async ({ page, world }, templatedOption, t
     await page.waitForTimeout(500);
 });
 
+// Native <select>: `option` is the value or the text of the option to select (value first, as with Cypress).
+When('I select option {string} in {string}', async ({ page, world }, templatedOption, templatedSelector) => {
+    const option = render(templatedOption, world);
+    const select = locate(page, world, templatedSelector);
+    const values = await select.locator('option').evaluateAll((options) => options.map(({ value }) => value));
+
+    await select.selectOption(values.includes(option) ? { value: option } : { label: option }, { force: true });
+});
+
 When('I move {string} of {int},{int}', async ({ page, world }, templatedSelector, x, y) => {
     await dragBy(page, locate(page, world, templatedSelector), x, y);
 });
