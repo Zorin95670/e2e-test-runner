@@ -92,6 +92,18 @@ When('I select {string} in {string}', (templatedOption, templatedSelector) => {
   });
 });
 
+// Native <select>: `option` is the value or the text of the option to select.
+When('I select option {string} in {string}', (templatedOption, templatedSelector) => {
+  cy.getContext().then((context) => {
+    const selector = render(templatedSelector, context);
+    const option = render(templatedOption, context);
+
+    runWithOrigin(context, { selector, option }, ({ selector, option }) => {
+      cy.get(selector).select(option, { force: true });
+    });
+  });
+});
+
 When('I move {string} of {int},{int}', (templatedSelector, x, y) => {
   cy.getContext().then((context) => {
     const selector = render(templatedSelector, context);

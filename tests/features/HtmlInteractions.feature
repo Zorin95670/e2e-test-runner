@@ -33,6 +33,18 @@ Feature: HTML interaction steps
     When I select "#option-banana" in "#select-button"
     Then I expect the HTML element "#select-result" contains "selected: Banana"
 
+  Scenario: Select an option of a native select by its text
+    Given I visit the "/index.html"
+    When I select option "Banana" in "#native-select"
+    Then I expect the HTML element "#native-select" to have value "2"
+    And I expect the HTML element "#native-select-result" contains "changed: 2"
+
+  Scenario: Select an option of a native select by its value
+    Given I visit the "/index.html"
+    When I select option "2" in "#native-select"
+    Then I expect the HTML element "#native-select" to have value "2"
+    And I expect the HTML element "#native-select-result" contains "changed: 2"
+
   Scenario: Drag elements
     Given I visit the "/index.html"
     When I drag "#draggable" onto "#drop-zone"

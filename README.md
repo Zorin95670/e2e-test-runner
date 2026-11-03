@@ -847,7 +847,7 @@ When I move "<selector>" of <x>,<y>
 When I move "#box" of 20,30
 ```
 
-9. Select an option inside a dropdown or menu
+9. Select an option inside a custom dropdown or menu (built with HTML elements, e.g. `<ul>`/`<li>`)
 
 ```gherkin
 When I select "<option>" in "<selector>"
@@ -856,7 +856,31 @@ When I select "<option>" in "<selector>"
 When I select ".option-2" in ".dropdown-menu"
 ```
 
-10. Set file(s) inside an input file
+Both arguments are **selectors**: the step clicks on `<selector>` to open the menu, then on `<option>`. It does not
+work with a native `<select>` element (Cypress refuses to click on it), use the next step instead.
+
+10. Select an option of a native `<select>` element
+
+```gherkin
+When I select option "<option>" in "<selector>"
+
+# Example:
+When I select option "CADENE Thomas" in "#interlocutor_id"
+When I select option "1000058" in "#interlocutor_id"
+```
+
+`<option>` is the **value** or the **text** of the option (not a selector); the value is tried first. The text is
+matched without its surrounding whitespace. The `change` event is triggered, and the step fails when no option
+matches. Selecting by value is more robust when the value is stable.
+
+```html
+<select id="interlocutor_id">
+  <option value="191193">BARDOT Delphine</option>
+  <option value="1000058">CADENE Thomas</option>
+</select>
+```
+
+11. Set file(s) inside an input file
 
 ```gherkin
 When I set file input "<selector>" with file "<file-paths>"
@@ -1530,6 +1554,7 @@ When I drag "<originSelector>" onto "<destinationSelector>"
 When I drag "<selector>" of <x>,<y>
 When I move "<selector>" of <x>,<y>
 When I select "<option>" in "<selector>"
+When I select option "<option>" in "<selector>"
 When I set file input "<selector>" with file "<file-paths>"
 When I set file input "<selector>" with files "<file-paths>"
 
